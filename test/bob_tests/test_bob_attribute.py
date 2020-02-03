@@ -1,6 +1,4 @@
-#import sys
-#sys.path.append("songbird-server")
-from resources.attribute import Attribute
+from songbird_server.resources.attribute import Attribute
 
 data = [
     {
@@ -30,14 +28,28 @@ def test_basic():
     assert 1 == 1
 
 def test_attribute_1():
+    index = 1
     curr = Attribute()
-    assert data[0] == curr.get(1)
+    assert data[index-1] == curr.get(index)
 
 def test_attribute_2():
+    index = 2
     curr = Attribute()
-    assert data[1] == curr.get(2)
+    assert data[index-1] == curr.get(index)
 
 def test_attribute_3():
+    index = 3
     curr = Attribute()
-    assert data[2] == curr.get(3)
+    assert data[index-1] == curr.get(index)
 
+def test_attribute_0():
+    empty_dict = {}
+    index = 0
+    curr = Attribute()
+    assert curr.get(index) == empty_dict
+
+def test_attribute_4():
+    empty_dict = {}
+    index = 4
+    curr = Attribute()
+    assert curr.get(index) == empty_dict
