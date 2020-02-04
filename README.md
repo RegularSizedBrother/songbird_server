@@ -13,3 +13,9 @@ pip install flask-cors
 ```
 python app.py
 ```
+
+## Testing
+
+```
+pytest
+```
