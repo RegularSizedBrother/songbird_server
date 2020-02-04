@@ -8,4 +8,7 @@ data = [
 
 class Playlist(Resource):
     def get(self, handle_id):
-        return {"playlist": data[handle_id-1]}
+        playlist = ""
+        if handle_id >= 1 and handle_id <= 3:
+           playlist = data[handle_id-1]
+        return {"playlist": playlist}

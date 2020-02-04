@@ -14,4 +14,5 @@ class Twitter(Resource):
     def post(self):
         args = parser.parse_args()
         print(args)
-        return {"handle_id": data[args["handle"]]}
+        return {"handle_id": data.get(args["handle"])}
+        #return {"handle_id": data[args["handle"]]}
