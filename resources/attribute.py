@@ -26,4 +26,7 @@ data = [
 
 class Attribute(Resource):
     def get(self, handle_id):
-        return data[handle_id-1]
+        if handle_id >= 1 and handle_id <= 3:
+            return data[handle_id-1]
+        else:
+            return {}
