@@ -84,7 +84,7 @@ class MusicGenreQuerier:
                                         conversions=config["conversions"],
                                         enrichments=config["enrichments"],
                                         normalizations=config["normalizations"]).get_result()
-        print(self.discovery.get_configuration(self.environment_id, self.config_id))
+        #print(self.discovery.get_configuration(self.environment_id, self.config_id))
 
 
     #Returns list of {correlation_type:, genre: , dimension: } dicts
@@ -112,6 +112,17 @@ class MusicGenreQuerier:
                 relation_list.append({"correlation_type": correlation_type, "genre": genre, "dimension_name":dimension_name})
         return relation_list
 
+    #Backup dummy method not using relationships to get genres from result
+    #Returns a set of all genres co-occuring in the results
+    def get_genre_entities_from_result(self, result):
+        search_results = result["aggregations"][0]["aggregations"][0]["aggregations"][0]["results"]
+        return set([result["key"] for result in search_results])
+        # genre_list = []
+        #for result in search_results:
+        #    entities = result["enriched_text"]["entities"]
+        #    genre_list = genre_list + [entity["text"] for entity in entities if entity["type"] == "Genre"]
+        #return set(genre_list)
+
     # Takes list of results in form [{correlation_type:, genre: , dimension: }] and
     # returns list of PersonalityDimension objects
     def process_query_result(self, result_list):
@@ -133,26 +144,27 @@ class MusicGenreQuerier:
     #The lists will include duplicates of genres if they are correlated with more than one trait in high_scoring_traits.
     # given a list of high scoring personality traits(list
     #of strings of the names)
-    def get_genres(self, high_scoring_traits):
-        query_result = self.discovery.query(self.environment_id, self.collection_id,
-                                            natural_language_query= " and ".join(high_scoring_traits)).get_result()
-        print(query_result)
-        formatted_results = self.clean_results(query_result)
-        dimension_results = self.process_query_result(formatted_results)
-        pos_genres = [genre for dimension in dimension_results for genre in dimension.pos_correlation_genres]
-        neg_genres = [genre for dimension in dimension_results for genre in dimension.neg_correlation_genres]
-        return (pos_genres, neg_genres)
+    #If dummy: uses only genres that co-occur with traits and adds all to personality trait's positive set
+    #Else: uses genres that have positive or negative correlation with traits in the corresponding trait's set
+    def get_genres(self, high_scoring_traits, dummy=False):
+        if not dummy:
+            query_result = self.discovery.query(self.environment_id, self.collection_id,
+                                                natural_language_query=" and ".join(high_scoring_traits)).get_result()
+            formatted_results = self.clean_results(query_result)
+            dimension_results = self.process_query_result(formatted_results)
+            pos_genres = [genre for dimension in dimension_results for genre in dimension.pos_correlation_genres]
+            neg_genres = [genre for dimension in dimension_results for genre in dimension.neg_correlation_genres]
+            return (pos_genres, neg_genres)
+        else:
+            query_result = self.discovery.query(self.environment_id, self.collection_id,natural_language_query= " and ".join(high_scoring_traits),
+                                                aggregation="nested(enriched_text.entities).filter(enriched_text.entities.type::\"Genre\").term(enriched_text.entities.text,count:5)").get_result()
+            return (self.get_genre_entities_from_result(query_result), set())
 
 
-
-
-
-music_querier = MusicGenreQuerier()
-music_querier.update_model("3a529978-d785-4895-935b-43d467a57524")
-test_file = open("sample_query_result", "w+")
-test_file.write(json.dumps(music_querier.discovery.query(music_querier.environment_id, music_querier.collection_id,
-                                            natural_language_query= "Extroversion").get_result(), indent = 2))
-print(music_querier.get_genres(["Openness to experience"]))
+if __name__ == "__main__":
+    music_querier = MusicGenreQuerier()
+    print(music_querier.get_genres(["Openness to experience"]))
+    print(music_querier.get_genres(["Openness to experience", "Agreeableness"], dummy=True))
 
 
 
