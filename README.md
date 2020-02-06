@@ -13,9 +13,9 @@ pip install flask-cors
 ```
 python app.py
 ```
-## twitter_dumper.py execution
+## tweet_dumper.py execution
 ```
-python twitter_dumper.py twitter_account_name
+python tweet_dumper.py twitter_account_name
 
-ex: python twitter_dumper.py BarackObama
+ex: python tweet_dumper.py BarackObama
 ```
