@@ -114,6 +114,7 @@ class MusicGenreQuerier:
 
     #Backup dummy method not using relationships to get genres from result
     #Returns a set of all genres co-occuring in the results
+    #result: dictionary result from Discovery query, an aggregation of entities of type Genre
     def get_genre_entities_from_result(self, result):
         search_results = result["aggregations"][0]["aggregations"][0]["aggregations"][0]["results"]
         return set([result["key"] for result in search_results])
@@ -141,12 +142,12 @@ class MusicGenreQuerier:
     #Returns:
     #   list of positively correlating genres
     #   list of negatively correlating genres
-    #The lists will include duplicates of genres if they are correlated with more than one trait in high_scoring_traits.
+    # The lists will include duplicates of genres if they are correlated with more than one trait in high_scoring_traits.
     # given a list of high scoring personality traits(list
-    #of strings of the names)
-    #If dummy: uses only genres that co-occur with traits and adds all to personality trait's positive set
-    #Else: uses genres that have positive or negative correlation with traits in the corresponding trait's set
-    def get_genres(self, high_scoring_traits, dummy=False):
+    # of strings of the names: agreeableness, openness to experience, extroversion, conscientiousness, neuroticism
+    #If dummy: uses only genres that co-occur with traits and returns all in the positive set
+    #Else: uses genres that have positive or negative correlation with traits in the corresponding positive/negative set
+    def get_genres(self, high_scoring_traits, dummy=True):
         if not dummy:
             query_result = self.discovery.query(self.environment_id, self.collection_id,
                                                 natural_language_query=" and ".join(high_scoring_traits)).get_result()
@@ -156,16 +157,20 @@ class MusicGenreQuerier:
             neg_genres = [genre for dimension in dimension_results for genre in dimension.neg_correlation_genres]
             return (pos_genres, neg_genres)
         else:
+            if high_scoring_traits == []:
+                return ([],[])
             query_result = self.discovery.query(self.environment_id, self.collection_id,natural_language_query= " and ".join(high_scoring_traits),
                                                 aggregation="nested(enriched_text.entities).filter(enriched_text.entities.type::\"Genre\").term(enriched_text.entities.text,count:5)").get_result()
-            return (self.get_genre_entities_from_result(query_result), set())
+            return (self.get_genre_entities_from_result(query_result), [])
 
 
 if __name__ == "__main__":
     music_querier = MusicGenreQuerier()
     print(music_querier.get_genres(["Openness to experience"]))
     print(music_querier.get_genres(["Openness to experience", "Agreeableness"], dummy=True))
-
+    #sample_result = music_querier.discovery.query(music_querier.environment_id, music_querier.collection_id,natural_language_query= "openness",
+    #                                           aggregation="nested(enriched_text.entities).filter(enriched_text.entities.type::\"Genre\").term(enriched_text.entities.text,count:5)").get_result()
+    #json.dump(sample_result,open("../test/discovery_music_tests/empty_dummy_query_result", "w"), indent=2)
 
 
 
