@@ -1,4 +1,4 @@
-from resources.twitter import Twitter
+from songbird_server.resources.twitter import Twitter
 
 data = {
     "JeffBezos": 1,
