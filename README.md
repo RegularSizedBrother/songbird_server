@@ -18,7 +18,10 @@ python app.py
 
 ```
 pytest
+
+```
 ## tweet_dumper.py execution
+
 ```
 python tweet_dumper.py twitter_account_name
 
