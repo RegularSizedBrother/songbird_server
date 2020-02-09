@@ -11,7 +11,7 @@ from spotify_config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_RED
 
 #Ideally would return the access token for the user, but im bad at APIs?
 def get_access_token():
-    sp_oauth = oauth2.SpotifyOAuth(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI, scope=SCOPE)
+    sp_oauth = oauth2.SpotifyOAuth(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI, scope=SCOPE, cache_path=CACHE)
     token_info = sp_oauth.get_cached_token()
     print("TEST")
     print(token_info)
@@ -22,7 +22,8 @@ def get_access_token():
 
     else:
         print("Did not find cached token?")
-        access_token = "BQDegenM4IAc1Eww5gb13jc4V78kAkOtgg1YHUpR1Q-NhoMAF4ori3r4Zc8Vj0HArKz390_UAiwpIdD81X4_NpkOI6Fpyr4n_ZlR98BbFHyO_o4bk0iG2mwlgFSiC1i1W7fOGGBeBF7GVz_GnlAwBHWsrw-tEbnI4S0-qe0jn3ma5a5iS_NX6vSt9D-IqMiqkEdBw0dkXO4TkmX2LhUcJ0pUjbsQqdQU06nhV456W837fNZ6hTUK"
+        spotipy.util.prompt_for_user_token('humes.35@osu.edu', scope=SCOPE, client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=CACHE)
+        #access_token = "BQCl6WOvMSEc73xHDPFBMKKiuuSNR2T-BOFxBk0mSaIvdgm6c36LKuOZMrIMcjgpeJTAIULavhOjPWnScBApYJLjtFz06QmMPfMy5BhjBVyawGz6JE-aqOc7EbJeqoUakGaHLoqVcBDO2EtQ5--pRGKxrqLSZl-SIy1gIUdU6LMvqKRAdJRZOgoZwO_thURPcoaXG5ZGd9swu_B5yS976s7AKiuYtuTyEW0JujXYysTb975WRlHL"
     return access_token
 
 # Get recommendations - returns an array of tracks based on genres and traits - PRE SORTED
@@ -46,6 +47,7 @@ def get_recommendations(genres=[], features=[]):
             sounds_of_silence = ['3CepTOU9Y7FezTt0CF3lCw', '1Cj2vqUwlJVG27gJrun92y', '0ZFeVCKCMCXUQ1TKVd2azW']
             print('silence...')
             return sp.tracks(sounds_of_silence)
+            #return sp.recommendations(seed_tracks=sounds_of_silence)
 
         elif len(features) == 0:
             recs = sp.recommendations(seed_genres=genres)
@@ -161,3 +163,14 @@ print('FINISH BIG TEST')
 print('CHECK MORE THAN 5 GENRES')
 print(generate_playlist("@LotsOfGenres", ['test', 'rock', 'hip-hop', 'cheese', 'classical', 'disco', 'electronic', 'folk', 'funk', 'metal']))
 print('FINISH CHECK')
+print('Empty')
+print(generate_playlist())
+print('Finish empty')
+
+'''
+print('Hmmmmm')
+sounds_of_silence = ['3CepTOU9Y7FezTt0CF3lCw', '1Cj2vqUwlJVG27gJrun92y', '0ZFeVCKCMCXUQ1TKVd2azW']
+access_token = get_access_token()
+sp = spotipy.Spotify(access_token)
+print(sp.recommendations(seed_tracks=sounds_of_silence))
+'''
