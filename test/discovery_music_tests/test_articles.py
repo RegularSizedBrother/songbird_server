@@ -1,4 +1,4 @@
-from resources.articles import MusicGenreQuerier
+from songbird_server.resources.articles import MusicGenreQuerier
 import json
 
 # Test plan(dummy version):
