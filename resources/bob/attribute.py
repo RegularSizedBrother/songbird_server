@@ -1,4 +1,5 @@
 from flask_restful import Resource
+import random
 
 data = [
     {
@@ -26,7 +27,10 @@ data = [
 
 class BobAttribute(Resource):
     def get(self, handle_id):
+        if random.randint(0, 1) == 0:
+            return { "wait": True }
+
         if handle_id >= 1 and handle_id <= 3:
-            return data[handle_id-1]
+            return { "error": False, "data": data[handle_id-1] }
         else:
-            return {}
+            return { "error": True }
