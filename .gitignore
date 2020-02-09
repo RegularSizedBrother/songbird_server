@@ -2,6 +2,12 @@
 .vscode/
 .idea/
 
+#Tweet testing result files
+BarackObama_tweets.csv
+Dennis42621058_tweets.csv
+tweets.txt
+TBDBITL_tweets.csv
+
 # Vagrant
 .vagrant/
 
@@ -126,3 +132,4 @@ dmypy.json
 
 # database
 *.db
+j8ffbezos_tweets.csv
