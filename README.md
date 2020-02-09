@@ -8,12 +8,29 @@ pip install flask-restful
 pip install flask-cors
 ```
 
+## Creating the Database
+
+```
+$ python
+>>> from src.app import app, db
+>>> with app.app_context():
+...     db.init_app(app)
+```
+
 ## Running
 
 ```
-python app.py
+python main.py
+```
+
+## Testing
+
+```
+pytest
+
 ```
 ## tweet_dumper.py execution
+
 ```
 python tweet_dumper.py twitter_account_name
 
