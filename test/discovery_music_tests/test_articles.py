@@ -29,7 +29,9 @@ def test_get_genres_all5():
 
 def test_process_query_results():
     music_querier = MusicGenreQuerier()
-    actual_results =music_querier.get_genre_entities_from_result(json.load(open("empty_dummy_query_result")))
+    mock_file = open("songbird_server/test/discovery_music_tests/empty_dummy_query_result")
+    actual_results = music_querier.get_genre_entities_from_result(json.load(mock_file))
+    mock_file.close()
     expected_results = set()
     assert expected_results == actual_results
 
