@@ -1,3 +1,6 @@
+# Used to give us an idea on how to authenticate spotify users
+# code pulled from: https://stackoverflow.com/questions/25711711/spotipy-authorization-code-flow
+
 from bottle import route, run, request
 import spotipy
 from spotipy import oauth2
