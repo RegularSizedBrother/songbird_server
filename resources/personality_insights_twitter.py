@@ -19,13 +19,18 @@ class TwitterPersonality:
 
     def traits_to_vector(self, profile):
         if profile is None:
-            return []
+            return {}
         big5_objects = profile["personality"]
+        '''
         big5_vector = []
 
         for trait in big5_objects:
             big5_vector.append(trait["name"])
             big5_vector.append(trait["percentile"])
+        '''
+        big5_vector = {}
+        for trait in big5_objects:
+            big5_vector[trait["name"]] = trait["percentile"]
         return big5_vector
 
     def get_profile(self, filename):

@@ -129,3 +129,4 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+j8ffbezos_tweets.csv

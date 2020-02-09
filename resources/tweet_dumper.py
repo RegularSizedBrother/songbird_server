@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
+#Code taken from: https://gist.github.com/yanofsky/5436496
 
 import tweepy #https://github.com/tweepy/tweepy
 import csv
@@ -24,8 +25,15 @@ class TwitterDumper:
 		#initialize a list to hold all the tweepy Tweets
 		alltweets = []	
 		
+		new_tweets = []
 		#make initial request for most recent tweets (200 is the maximum allowed count)
-		new_tweets = api.user_timeline(screen_name = screen_name,count=200)
+		try:
+			new_tweets = api.user_timeline(screen_name = screen_name,count=200)
+		except:
+			print("Error: Invalid user")
+			t = open('%s_tweets.csv' % screen_name, 'w')
+			t.close()
+			return
 		
 		#save most recent tweets
 		alltweets.extend(new_tweets)
