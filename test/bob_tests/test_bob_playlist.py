@@ -1,4 +1,4 @@
-from songbird_server.resources.playlist import Playlist
+from src.resources.playlist import Playlist
 
 data = [
     {"playlist": "https://open.spotify.com/playlist/5EF18jWof9VRYaC7ss3Wte"},

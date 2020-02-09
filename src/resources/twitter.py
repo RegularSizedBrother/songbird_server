@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask import request
 
-from models.recommendation import Recommendation, db
+from src.models.recommendation import Recommendation, db
 
 parser = reqparse.RequestParser()
 parser.add_argument('handle')

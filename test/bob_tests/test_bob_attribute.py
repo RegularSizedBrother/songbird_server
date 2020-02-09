@@ -1,4 +1,4 @@
-from songbird_server.resources.attribute import Attribute
+from src.resources.attribute import Attribute
 
 data = [
     {
