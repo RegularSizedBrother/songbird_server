@@ -1,4 +1,4 @@
-from songbird_server.resources.articles import MusicGenreQuerier
+from src.resources.articles import MusicGenreQuerier
 
 #Test for personality trait typos
 
