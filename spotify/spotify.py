@@ -22,7 +22,7 @@ def get_access_token():
 
     else:
         print("Did not find cached token?")
-        spotipy.util.prompt_for_user_token('humes.35@osu.edu', scope=SCOPE, client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=CACHE)
+        access_token = spotipy.util.prompt_for_user_token('humes.35@osu.edu', scope=SCOPE, client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=CACHE)
         #access_token = "BQCl6WOvMSEc73xHDPFBMKKiuuSNR2T-BOFxBk0mSaIvdgm6c36LKuOZMrIMcjgpeJTAIULavhOjPWnScBApYJLjtFz06QmMPfMy5BhjBVyawGz6JE-aqOc7EbJeqoUakGaHLoqVcBDO2EtQ5--pRGKxrqLSZl-SIy1gIUdU6LMvqKRAdJRZOgoZwO_thURPcoaXG5ZGd9swu_B5yS976s7AKiuYtuTyEW0JujXYysTb975WRlHL"
     return access_token
 
