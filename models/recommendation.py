@@ -9,6 +9,9 @@ class Recommendation(db.Model):
     agreeableness = db.Column(db.Integer)
     empathy = db.Column(db.Integer)
     playlist = db.Column(db.String(255))
+    error = db.Column(db.Boolean)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def __repr__(self):
         return '<Recommendation %s>' % self.handle
