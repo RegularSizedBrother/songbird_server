@@ -15,8 +15,8 @@ data = {
 class Twitter(Resource):
     def post(self):
         args = parser.parse_args()
-        record = Recommendation(handle=args["handle"])
         return {"handle_id": data.get(args["handle"])
+        # record = Recommendation(handle=args["handle"])
         # db.session.add(record)
         # db.session.commit();
 
