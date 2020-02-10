@@ -11,11 +11,13 @@ class Attribute(Resource):
         elif(recommendation.openness is not None):
             return {
                 "error": False,
-                "Openness": recommendation.openness,
-                "Conscientiousness": recommendation.conscientiousness,
-                "Extraversion": recommendation.extraversion,
-                "Agreeableness": recommendation.agreeableness,
-                "Emotional Range": recommendation.neuroticism,
+                "data": {
+                    "Openness": recommendation.openness,
+                    "Conscientiousness": recommendation.conscientiousness,
+                    "Extraversion": recommendation.extraversion,
+                    "Agreeableness": recommendation.agreeableness,
+                    "Emotional Range": recommendation.neuroticism,
+                }
             }
         else:
             return {"wait": True}
