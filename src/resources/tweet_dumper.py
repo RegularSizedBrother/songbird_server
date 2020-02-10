@@ -57,10 +57,10 @@ class TwitterDumper:
 			print("...%s tweets downloaded so far" % (len(alltweets)))
 		
 		#transform the tweepy tweets into a 2D array that will populate the csv	
-		outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for tweet in alltweets]
+		outtweets = [[tweet.id_str, tweet.created_at, tweet.text] for tweet in alltweets]
 		
 		#write the csv	
-		with open('%s_tweets.csv' % screen_name, 'w') as f:
+		with open('%s_tweets.csv' % screen_name, 'w', encoding = "utf-8") as f:
 			writer = csv.writer(f)
 			writer.writerow(["id", "created_at", "text"])
 			writer.writerows(outtweets)
