@@ -9,3 +9,4 @@ ibm-watson==4.1.0
 rq==1.2.2
 tweepy==3.8.0
 pandas==1.0.1
+spotipy==2.7.1
