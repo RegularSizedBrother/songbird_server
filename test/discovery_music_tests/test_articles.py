@@ -38,5 +38,3 @@ def test_process_query_results():
     expected_results = set()
     assert expected_results == actual_results
 
-
-
