@@ -9,6 +9,8 @@ import random
 
 def process(id):
     with app.app_context():
+        print("starting twitter job for id %i" % id)
+
         recommendation = Recommendation.query.get(id)
 
         time.sleep(5) # simulate processing
@@ -21,7 +23,7 @@ def process(id):
 
         db.session.commit()
 
-        print(recommendation)
+        print("finished twitter job for id %i" % id)
 
         queue = rq.Queue('songbird', connection=Redis.from_url('redis://'))
         job = queue.enqueue('src.jobs.spotify.process', id)
