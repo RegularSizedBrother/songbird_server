@@ -10,7 +10,7 @@ def process(id):
         print("starting spotify job for id %i" % id)
         recommendation = Recommendation.query.get(id)
 
-        time.sleep(5)
+        time.sleep(5) # simulate processing
 
         letters = string.ascii_lowercase
         recommendation.playlist = ''.join(random.choice(letters) for i in range(30))
