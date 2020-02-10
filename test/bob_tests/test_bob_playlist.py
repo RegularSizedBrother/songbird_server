@@ -1,4 +1,4 @@
-from src.resources.playlist import Playlist
+from src.resources.bob.playlist import BobPlaylist
 
 data = [
     {"playlist": "https://open.spotify.com/playlist/5EF18jWof9VRYaC7ss3Wte"},
@@ -8,29 +8,29 @@ data = [
 
 def test_playlist_1():
     index = 1
-    curr = Playlist()
+    curr = BobPlaylist()
     assert curr.get(index) == data[index-1]
 
 def test_playlist_2():
     index = 2
-    curr = Playlist()
+    curr = BobPlaylist()
     assert curr.get(index) == data[index-1]
 
 def test_playlist_3():
     index = 3
-    curr = Playlist()
+    curr = BobPlaylist()
     assert curr.get(index) == data[index-1]
 
 def test_playlist_0():
     empty_dict = {"playlist": ""}
     index = 0
-    curr = Playlist()
+    curr = BobPlaylist()
     assert curr.get(index) == empty_dict
 
 def test_playlist_4():
     empty_dict = {"playlist": ""}
     index = 4
-    curr = Playlist()
+    curr = BobPlaylist()
     assert curr.get(index) == empty_dict
 
 

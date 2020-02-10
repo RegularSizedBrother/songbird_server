@@ -1,4 +1,4 @@
-from src.resources.twitter import Twitter
+from src.resources.bob.twitter import BobTwitter
 
 data = {
     "JeffBezos": 1,
