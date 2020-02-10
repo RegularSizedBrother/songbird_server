@@ -1,5 +1,9 @@
-from songbird_server.resources.articles import MusicGenreQuerier
+from src.resources.articles import MusicGenreQuerier
 import json
+import os
+
+curr_dir = os.path.dirname(os.path.abspath(__file__))
+dummy_file = os.path.join(curr_dir, 'empty_dummy_query_result.json')
 
 # Test plan(dummy version):
 #   get_genres (dummy = True)
@@ -29,9 +33,8 @@ def test_get_genres_all5():
 
 def test_process_query_results():
     music_querier = MusicGenreQuerier()
-    mock_file = open("test/discovery_music_tests/empty_dummy_query_result")
-    actual_results = music_querier.get_genre_entities_from_result(json.load(mock_file))
-    mock_file.close()
+    #actual_results =music_querier.get_genre_entities_from_result(json.load(open("empty_dummy_query_result.json")))
+    actual_results =music_querier.get_genre_entities_from_result(json.load(open(dummy_file)))
     expected_results = set()
     assert expected_results == actual_results
 
