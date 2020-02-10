@@ -1,4 +1,4 @@
-from src.resources.attribute import Attribute
+from src.resources.bob.attribute import BobAttribute
 
 data = [
     {
@@ -29,27 +29,27 @@ def test_basic():
 
 def test_attribute_1():
     index = 1
-    curr = Attribute()
+    curr = BobAttribute()
     assert data[index-1] == curr.get(index)
 
 def test_attribute_2():
     index = 2
-    curr = Attribute()
+    curr = BobAttribute()
     assert data[index-1] == curr.get(index)
 
 def test_attribute_3():
     index = 3
-    curr = Attribute()
+    curr = BobAttribute()
     assert data[index-1] == curr.get(index)
 
 def test_attribute_0():
     empty_dict = {}
     index = 0
-    curr = Attribute()
+    curr = BobAttribute()
     assert curr.get(index) == empty_dict
 
 def test_attribute_4():
     empty_dict = {}
     index = 4
-    curr = Attribute()
+    curr = BobAttribute()
     assert curr.get(index) == empty_dict
