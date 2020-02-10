@@ -3,7 +3,9 @@ flask_cors==3.0.8
 flask_restful==0.3.7
 flask_SQLAlchemy==2.4.1
 pytest==5.3.5
+mock==4.0.1
 ibm-cloud-sdk-core==1.0.0
 ibm-watson==4.1.0
+rq==1.2.2
 tweepy==3.8.0
 pandas==1.0.1
