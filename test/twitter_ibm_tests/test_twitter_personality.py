@@ -8,7 +8,7 @@ empty_file = os.path.join(curr_dir, 'empty_tweets.csv')
 
 def test_more_than_cap_twitter():
     user = "BarackObama"
-    file_result = "%s_tweets.csv" % user
+    file_result = "tmp/%s_tweets.csv" % user
     twit_call = TwitterDumper()
     person_call = TwitterPersonality()
     twit_call.get_all_tweets(user)
@@ -18,7 +18,7 @@ def test_more_than_cap_twitter():
 
 def test_less_than_cap_twitter():
     user = "Dennis42621058"
-    file_result = "%s_tweets.csv" % user
+    file_result = "tmp/%s_tweets.csv" % user
     twit_call = TwitterDumper()
     person_call = TwitterPersonality()
     twit_call.get_all_tweets(user)
@@ -35,7 +35,7 @@ def test_empty_twitter():
 
 def test_invalid_twitter():
     user = "j8ffbezos"
-    file_result = "%s_tweets.csv" % user
+    file_result = "tmp/%s_tweets.csv" % user
     twit_call = TwitterDumper()
     person_call = TwitterPersonality()
     twit_call.get_all_tweets(user)
