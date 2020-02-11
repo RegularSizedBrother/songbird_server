@@ -52,6 +52,7 @@ class TwitterPersonality:
         ).get_result()
 
         f.close()
+        os.remove(filename)
         return profile
 
   
