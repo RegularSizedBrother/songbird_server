@@ -4,7 +4,7 @@ This file contains all the tools and functions needed for spotify integration.
 
 import spotipy
 from spotipy import oauth2
-from resources import spotify_config
+from src.resources import spotify_config
 
 
 # from spotify_config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI, SCOPE, CACHE, \

@@ -1,8 +1,8 @@
 import unittest
-from resources import spotify, spotify_config
+from src.resources import spotify, spotify_config
 import spotipy
 
-class MyTestCase(unittest.TestCase):
+class Spotify_Unit_Tests(unittest.TestCase):
     def test_get_access_token(self):
         test_access_token = spotify.get_access_token()
         print(len(test_access_token))
