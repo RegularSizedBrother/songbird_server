@@ -22,7 +22,8 @@ def test_many_valid_genres():
     user = "@BarackObama"
     genres = ["rock", "dance", "reggae", "anime", "jazz", "classical", "electronic", "funk", "R&B", "techno", "metal", "disco"]
     link = spotify.generate_playlist(user,genres)
-    assert link is not None and is not ""
+    assert link is not None
+    assert link !== ""
 
 def test_empty_genres():
     spotify = SpotifyParser()
