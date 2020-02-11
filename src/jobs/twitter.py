@@ -22,13 +22,17 @@ def process(id):
         if(status != "error"):
             tp = TwitterPersonality()
             p = tp.get_profile("tmp/%s_tweets.csv" % recommendation.handle)
-            v = tp.traits_to_vector(p)
 
-            recommendation.openness = floor(v['Openness'] * 100)
-            recommendation.conscientiousness = floor(v['Conscientiousness'] * 100)
-            recommendation.extraversion = floor(v['Extraversion'] * 100)
-            recommendation.agreeableness = floor(v['Agreeableness'] * 100)
-            recommendation.neuroticism = floor(v['Emotional range'] * 100)
+            if p is not None:
+                v = tp.traits_to_vector(p)
+
+                recommendation.openness = floor(v['Openness'] * 100)
+                recommendation.conscientiousness = floor(v['Conscientiousness'] * 100)
+                recommendation.extraversion = floor(v['Extraversion'] * 100)
+                recommendation.agreeableness = floor(v['Agreeableness'] * 100)
+                recommendation.neuroticism = floor(v['Emotional range'] * 100)
+            else:
+                recommendation.error = True
         else:
             recommendation.error = True
 
