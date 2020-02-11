@@ -20,7 +20,7 @@ def process(id):
         tw.get_all_tweets(recommendation.handle)
 
         tp = TwitterPersonality()
-        p = tp.get_profile("%s_tweets.csv" % recommendation.handle)
+        p = tp.get_profile("tmp/%s_tweets.csv" % recommendation.handle)
         v = tp.traits_to_vector(p)
 
         recommendation.openness = floor(v['Openness'] * 100)
