@@ -1,5 +1,5 @@
 import unittest
-from spotify import spotify, spotify_config
+from resources import spotify, spotify_config
 import spotipy
 
 class MyTestCase(unittest.TestCase):
@@ -21,7 +21,8 @@ class MyTestCase(unittest.TestCase):
         assert len(test_playlist_tracks.get('items')) == 3
         for test_track in test_playlist_tracks.get('items'):
             assert test_track.get('track').get('id') in correct_tracks
-        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID,playlist_id=test_url[len(spotify_config.PLAYLIST_PREFIX):])
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
 
     def test_generate_playlist_only_handle(self):
         test_url = spotify.generate_playlist(handle='@SampleHandle')
@@ -34,7 +35,8 @@ class MyTestCase(unittest.TestCase):
         assert len(test_playlist_tracks.get('items')) == 3
         for test_track in test_playlist_tracks.get('items'):
             assert test_track.get('track').get('id') in correct_tracks
-        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID,playlist_id=test_url[len(spotify_config.PLAYLIST_PREFIX):])
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
 
     def test_generate_playlist_pos_seeds_under_5_valid_only_genres(self):
         test_url = spotify.generate_playlist(handle='@SomePositiveSeeds', seeds=(["rock", "hip-hop"], []))
@@ -44,7 +46,8 @@ class MyTestCase(unittest.TestCase):
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
         assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
-        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID,playlist_id=test_url[len(spotify_config.PLAYLIST_PREFIX):])
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
 
 
     def test_generate_playlist_pos_seeds_under_5_invalid(self):
@@ -55,7 +58,8 @@ class MyTestCase(unittest.TestCase):
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
         assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
-        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID,playlist_id=test_url[len(spotify_config.PLAYLIST_PREFIX):])
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
 
     def test_generate_playlist_pos_seeds_over_5_invalid(self):
         test_url = spotify.generate_playlist(handle='@ManyPositiveInvalidSeeds', seeds=(["valence", "rock", "hip-hop", "cheese", "classical", "disco", "electronic", "folk", "funk", "metal"], []))
@@ -65,7 +69,8 @@ class MyTestCase(unittest.TestCase):
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
         assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
-        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID,playlist_id=test_url[len(spotify_config.PLAYLIST_PREFIX):])
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
 
     def test_generate_playlist_pos_seeds_genres_all_invalid(self):
         test_url = spotify.generate_playlist(handle='@AllInvalidSeeds', seeds=(
@@ -79,7 +84,8 @@ class MyTestCase(unittest.TestCase):
         assert len(test_playlist_tracks.get('items')) == 3
         for test_track in test_playlist_tracks.get('items'):
             assert test_track.get('track').get('id') in correct_tracks
-        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID,playlist_id=test_url[len(spotify_config.PLAYLIST_PREFIX):])
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
 
     def test_get_recommendations_only_genres(self):
         genres = ['rock', 'pop']
@@ -96,7 +102,6 @@ class MyTestCase(unittest.TestCase):
         assert len(test_recs.get('tracks')) == 3
         for test_track in test_recs.get('tracks'):
             assert test_track.get('id') in correct_track_ids
-
 
 
 if __name__ == '__main__':
