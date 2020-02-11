@@ -1,6 +1,8 @@
 from src.app import app, db
 from src.models.recommendation import Recommendation
 
+import src.resources.spotify as spotify
+
 import time
 import random
 import string
@@ -12,8 +14,9 @@ def process(id):
 
         time.sleep(5) # simulate processing
 
-        letters = string.ascii_lowercase
-        recommendation.playlist = ''.join(random.choice(letters) for i in range(30))
+        playlist = spotify.generate_playlist(recommendation.handle, ())
+
+        recommendation.playlist = plalist
 
         db.session.commit()
 
