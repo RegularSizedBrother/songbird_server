@@ -136,3 +136,4 @@ j8ffbezos_tweets.csv
 
 # temporary files
 /tmp/*
+!/tmp/.keep
