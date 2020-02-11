@@ -7,3 +7,15 @@ SCOPE = 'playlist-read-private,playlist-read-collaborative,playlist-modify-publi
 CACHE = '.spotipyoauthcache'
 
 SONGBIRD_USER_ID = 'uq3239d0haeqkigwirvogp6fa'
+SONGBIRD_USER_EMAIL = 'humes.35@osu.edu'
+
+# original: 3CepTOU9Y7FezTt0CF3lCw
+# Disturbed: 1Cj2vqUwlJVG27gJrun92y
+# Pentatonix: 0ZFeVCKCMCXUQ1TKVd2azW
+SOUNDS_OF_SILENCE = ['3CepTOU9Y7FezTt0CF3lCw', '1Cj2vqUwlJVG27gJrun92y', '0ZFeVCKCMCXUQ1TKVd2azW']
+
+PLAYLIST_SIZE = 20
+
+# Test values
+ACCESS_TOKEN_LEN = 244
+PLAYLIST_PREFIX = 'https://open.spotify.com/playlist/'
