@@ -8,7 +8,8 @@ def test_regular_genres():
     traits = ["Openness to experience", "Agreeableness"]
     genres = query.get_genres(traits)
     link = spotify.generate_playlist(user,genres)
-    assert link is not None and is not ""
+    assert link is not None 
+    assert link !== ""
 
 def test_no_valid_genres():
     spotify = SpotifyParser()
