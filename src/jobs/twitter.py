@@ -1,17 +1,18 @@
-from src.app import app, db
+# from src.app import create_app
+
+from src.models.shared import db
 from src.models.recommendation import Recommendation
 from src.resources.tweet_dumper import TwitterDumper
 from src.resources.personality_insights_twitter import TwitterPersonality
 
-import rq
-from redis import Redis
+from src.jobs.config import huey
+
 from math import floor
 
-import time
-import random
-
+@huey.task()
 def process(id):
-    with app.app_context():
+    # app = create_app()
+    with current_app.app_context():
         print("starting twitter job for id %i" % id)
 
         recommendation = Recommendation.query.get(id)

@@ -1,4 +1,6 @@
-from src.app import app, db
+# from src.app import app, db
+from src.app import create_app
+from src.models.shared import db
 from src.models.recommendation import Recommendation
 
 import src.resources.spotify as spotify
@@ -6,6 +8,8 @@ import src.resources.tweet_genres as tg
 import time
 import random
 import string
+
+app = create_app()
 
 def process(id):
     with app.app_context():
