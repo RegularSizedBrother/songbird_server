@@ -31,6 +31,9 @@ def process(id):
                 recommendation.extraversion = floor(v['Extraversion'] * 100)
                 recommendation.agreeableness = floor(v['Agreeableness'] * 100)
                 recommendation.neuroticism = floor(v['Emotional range'] * 100)
+
+                queue = rq.Queue('songbird', connection=Redis.from_url('redis://'))
+                job = queue.enqueue('src.jobs.spotify.process', id)
             else:
                 recommendation.error = True
         else:
@@ -39,6 +42,3 @@ def process(id):
         db.session.commit()
 
         print("finished twitter job for id %i" % id)
-
-        queue = rq.Queue('songbird', connection=Redis.from_url('redis://'))
-        job = queue.enqueue('src.jobs.spotify.process', id)
