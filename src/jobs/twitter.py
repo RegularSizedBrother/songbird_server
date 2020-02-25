@@ -1,4 +1,4 @@
-# from src.app import create_app
+import src.app as a
 
 from src.models.shared import db
 from src.models.recommendation import Recommendation
@@ -6,13 +6,14 @@ from src.resources.tweet_dumper import TwitterDumper
 from src.resources.personality_insights_twitter import TwitterPersonality
 
 from src.jobs.config import huey
+import src.jobs.spotify as spotify
 
 from math import floor
 
 @huey.task()
-def process(id):
-    # app = create_app()
-    with current_app.app_context():
+def process_twitter(id):
+    app = a.create_app()
+    with app.app_context():
         print("starting twitter job for id %i" % id)
 
         recommendation = Recommendation.query.get(id)
@@ -33,13 +34,12 @@ def process(id):
                 recommendation.agreeableness = floor(v['Agreeableness'] * 100)
                 recommendation.neuroticism = floor(v['Emotional range'] * 100)
 
-                queue = rq.Queue('songbird', connection=Redis.from_url('redis://'))
-                job = queue.enqueue('src.jobs.spotify.process', id)
+                db.session.commit()
+
+                spotify.process_spotify(id)
             else:
                 recommendation.error = True
         else:
             recommendation.error = True
-
-        db.session.commit()
 
         print("finished twitter job for id %i" % id)

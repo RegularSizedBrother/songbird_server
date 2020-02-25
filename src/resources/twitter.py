@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask import request
 
-from src.jobs.twitter import process
+import src.jobs.twitter as twitter
 
 from src.models.shared import db
 from src.models.recommendation import Recommendation
@@ -17,6 +17,6 @@ class Twitter(Resource):
         db.session.add(record)
         db.session.commit();
 
-        process(record.id)
+        twitter.process_twitter(record.id)
 
         return {"handle_id": record.id}

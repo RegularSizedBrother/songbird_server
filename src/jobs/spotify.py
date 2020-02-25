@@ -1,17 +1,15 @@
-# from src.app import app, db
-from src.app import create_app
+import src.app as a
 from src.models.shared import db
 from src.models.recommendation import Recommendation
 
+from src.jobs.config import huey
+
 import src.resources.spotify as spotify
 import src.resources.tweet_genres as tg
-import time
-import random
-import string
 
-app = create_app()
-
-def process(id):
+@huey.task()
+def process_spotify(id):
+    app = a.create_app()
     with app.app_context():
         print("starting spotify job for id %i" % id)
         recommendation = Recommendation.query.get(id)
