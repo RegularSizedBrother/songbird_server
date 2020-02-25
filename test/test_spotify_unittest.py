@@ -103,6 +103,73 @@ class Spotify_Unit_Tests(unittest.TestCase):
         for test_track in test_recs.get('tracks'):
             assert test_track.get('id') in correct_track_ids
 
+    def test_filter_seeds_duplicate_genres_no_feats(self):
+        seeds = ['rock', 'rock', 'pop']
+        genres = []
+        features = []
+        expected_genres = ['rock', 'pop']
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_seeds_no_seeds(self):
+        seeds = []
+        genres = []
+        features = []
+        expected_genres = []
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_seeds_only_genres_fake_terms(self):
+        seeds = ['cheese', 'music bad', 0, 'seventy-two', 'rock', 'hip-hop', 'fake']
+        genres = []
+        features = []
+        expected_genres = ['rock', 'hip-hop']
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_rap(self):
+        seeds = ['cheese', 'rap', 0, 'seventy-two', 'rock', 'jazz', 'fake']
+        genres = []
+        features = []
+        expected_genres = ['hip-hop', 'rock', 'jazz']
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_recommendation_sorcery(self):
+        genres = ['rock', 'pop']
+
+        access_token = spotify.get_access_token()
+
+        sp = spotipy.Spotify(access_token)
+
+        # Can use the 'dict' object to pass in named arguments (keyword args)
+        # KEY: name of parameter
+        # VALUE: value of parameter
+        # MUST USE ** to 'unpack' dict into parameter form
+        magic = dict(seed_genres=genres, limit=spotify_config.PLAYLIST_SIZE)
+        test = 'target_valence'
+        magic[test] = 0.8
+        test_recs = sp.recommendations(**magic)
+
+        assert test_recs is not None
+        assert len(test_recs.get('tracks')) == spotify_config.PLAYLIST_SIZE
+
 
 if __name__ == '__main__':
     unittest.main()
