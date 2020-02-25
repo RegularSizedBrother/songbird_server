@@ -6,6 +6,8 @@
 pip install
 ```
 
+To run the background consumers, you will need [Redis](https://redis.io) and [Huey](https://huey.readthedocs.io/en/latest/index.html).
+
 ## Creating the Database
 
 ```
