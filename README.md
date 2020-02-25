@@ -3,24 +3,27 @@
 ## Installation
 
 ```
-pip install flask
-pip install flask-restful
-pip install flask-cors
+pip install
 ```
 
 ## Creating the Database
 
 ```
-$ python
->>> from src.app import app, db
->>> with app.app_context():
-...     db.init_app(app)
+python setup_db.py
 ```
 
 ## Running
 
+Run the server
+
 ```
 python main.py
+```
+
+Run the background jobs (be sure there is a redis instane runnning)
+
+```
+huey_consumer.py start_huey.huey
 ```
 
 ## Testing
