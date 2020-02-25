@@ -22,3 +22,4 @@ PLAYLIST_PREFIX = 'https://open.spotify.com/playlist/'
 
 FEATURES_LIST = ['acousticness', 'danceability', 'energy', 'instrumentalness', 'liveness', 'loudness',
                  'speechiness', 'valence', 'tempo']
+RATIO_FEATURES = ['acousticness', 'danceability', 'energy', 'instrumentalness', 'liveness', 'speechiness', 'valence']

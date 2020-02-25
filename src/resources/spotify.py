@@ -44,6 +44,14 @@ def get_recommendations(genres=[], pos_features=[], neg_features=[]):
         # example in 'test_spotify_unittest.py' - search 'sorcery'
         parameters = dict(seed_genres=genres, limit=spotify_config.PLAYLIST_SIZE)
 
+        for pos in pos_features:
+            if (pos in spotify_config.RATIO_FEATURES):
+                parameters['target_' + pos] = 0.95
+
+        for neg in neg_features:
+            if (neg in spotify_config.RATIO_FEATURES):
+                parameters['target_' + neg] = 0.05
+
         return sp.recommendations(**parameters)
 
 
@@ -96,8 +104,11 @@ def filter_seeds(seeds=None, genres=[], features=[], prev_features=[]):
             for entry in seeds:
                 if entry in available_genres and len(genres) < 5 and entry not in genres:
                     genres.append(entry)
-                elif entry in spotify_config.FEATURES_LIST and entry not in features and entry not in prev_features:
-                    features.append(entry)
+                elif entry in spotify_config.FEATURES_LIST and entry not in features:
+                    if entry not in prev_features:
+                        features.append(entry)
+                    else:
+                        prev_features.remove(entry)
                     # features.append(entry)
                     # Commented out because features are not currently considered
                     # print('Feature: ' + str(entry))

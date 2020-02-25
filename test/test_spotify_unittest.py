@@ -61,6 +61,28 @@ class Spotify_Unit_Tests(unittest.TestCase):
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
+    def test_generate_playlist_pos_seeds_live(self):
+        test_url = spotify.generate_playlist(handle='@LiveMusic', seeds=(["cheese", "rock", "liveness"], []))
+        expected_prefix = spotify_config.PLAYLIST_PREFIX
+        assert test_url.find(expected_prefix) == 0
+        assert len(test_url) > len(expected_prefix)
+        sp = spotipy.Spotify(spotify.get_access_token())
+        test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
+        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
+
+    def test_generate_playlist_neg_seeds_neg_feature(self):
+        test_url = spotify.generate_playlist(handle='@LowEnergy', seeds=(["cheese", "rock"], ["energy"]))
+        expected_prefix = spotify_config.PLAYLIST_PREFIX
+        assert test_url.find(expected_prefix) == 0
+        assert len(test_url) > len(expected_prefix)
+        sp = spotipy.Spotify(spotify.get_access_token())
+        test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
+        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
+
     def test_generate_playlist_pos_seeds_over_5_invalid(self):
         test_url = spotify.generate_playlist(handle='@ManyPositiveInvalidSeeds', seeds=(["valence", "rock", "hip-hop", "cheese", "classical", "disco", "electronic", "folk", "funk", "metal"], []))
         expected_prefix = spotify_config.PLAYLIST_PREFIX
@@ -72,7 +94,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
-    def test_generate_playlist_pos_seeds_genres_all_invalid(self):
+    def test_generate_playlist_pos_seeds_genres_some_invalid(self):
         test_url = spotify.generate_playlist(handle='@AllInvalidSeeds', seeds=(
         ["cheese",  "valence", "loudness", "test", "Franklin"], []))
         expected_prefix = spotify_config.PLAYLIST_PREFIX
@@ -84,6 +106,19 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_playlist_tracks.get('items')) == 3
         for test_track in test_playlist_tracks.get('items'):
             assert test_track.get('track').get('id') in correct_tracks
+        sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
+            spotify_config.PLAYLIST_PREFIX):])
+
+    def test_generate_playlist_lots_of_seeds(self):
+        test_url = spotify.generate_playlist(handle='@ManySeeds', seeds=(
+        ["cheese",  "valence", "loudness", "test", "Franklin", "rock", "hip-hop", "jazz", "danaceability"],
+        ["classical", "loudness", "energy", "wow", "acousticness"]))
+        expected_prefix = spotify_config.PLAYLIST_PREFIX
+        assert test_url.find(expected_prefix) == 0
+        assert len(test_url) > len(expected_prefix)
+        sp = spotipy.Spotify(spotify.get_access_token())
+        test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
+        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -150,6 +185,57 @@ class Spotify_Unit_Tests(unittest.TestCase):
 
         assert genres == expected_genres
         assert features == expected_features
+
+    def test_filter_rap_duplicate(self):
+        seeds = ['cheese', 'rap', 'hip-hop', 'seventy-two', 'rock', 'jazz', 'fake']
+        genres = []
+        features = []
+        expected_genres = ['hip-hop', 'rock', 'jazz']
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_rap_duplicate(self):
+        seeds = ['cheese', 'rap', 'hip-hop', 'seventy-two', 'energy', 'rock', 'jazz', 'fake', 'valence']
+        genres = []
+        features = []
+        expected_genres = ['hip-hop', 'rock', 'jazz']
+        expected_features = ['energy', 'valence']
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_duplicate_feats(self):
+        seeds = ['cheese', 'rap', 'hip-hop', 'energy', 'seventy-two', 'energy', 'rock', 'jazz', 'fake', 'valence']
+        genres = []
+        features = []
+        expected_genres = ['hip-hop', 'rock', 'jazz']
+        expected_features = ['energy', 'valence']
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_duplicate_in_prev_feats(self):
+        seeds = ['cheese', 'rap', 'hip-hop', 'seventy-two', 'energy', 'rock', 'jazz', 'fake', 'valence']
+        prev_features = ['valence', 'loudness']
+        genres = []
+        features = []
+        expected_genres = ['hip-hop', 'rock', 'jazz']
+        expected_features = ['energy']
+        expected_prev_features = ['loudness']
+
+        spotify.filter_seeds(seeds, genres, features, prev_features=prev_features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+        assert prev_features == expected_prev_features
 
     def test_recommendation_sorcery(self):
         genres = ['rock', 'pop']
