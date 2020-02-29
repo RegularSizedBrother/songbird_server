@@ -4,6 +4,7 @@
 # Music configuration ID: d8389d37-9f3d-4012-b0d1-0b7bf4fb606f
 # Knowledge Studio custom model ID 1: 492dc2fa-b316-4261-a334-0a22d1cb3e01
 # Knowledge Studio custom model ID 2: 3a529978-d785-4895-935b-43d467a57524
+# Knowledge Studio model ID 3: 3be676ec-c791-4449-96c2-69c8468272b2
 
 import json
 from ibm_watson import DiscoveryV1
@@ -40,6 +41,7 @@ class MusicGenreQuerier:
         self.config_name = "Music Personality Configuration xn4povqm3l"
         self.config_id = 'd8389d37-9f3d-4012-b0d1-0b7bf4fb606f'
         self.model_id = "492dc2fa-b316-4261-a334-0a22d1cb3e01"
+        #self.model_id = "3be676ec-c791-4449-96c2-69c8468272b2"
 
         self.api_key = 'HtXSJos-QBQdkbPW30YojoQD2Btbx0eVL8v-M4ZXIkHZ'
         self.url = 'https://api.us-south.discovery.watson.cloud.ibm.com/instances/0c9ea94a-f8d3-4c61-9ee7-984ab92c5cad'
@@ -109,7 +111,7 @@ class MusicGenreQuerier:
                 dimension_name = correlation["arguments"][0]["text"] #Dimension is argument 0
                 genre = correlation["arguments"][1]["text"] #Genre is argument 1
                 correlation_type = correlation["type"]
-                print(correlation_type)
+                #print(correlation_type)
                 relation_list.append({"correlation_type": correlation_type, "genre": genre, "dimension_name":dimension_name})
         return relation_list
 
@@ -129,11 +131,12 @@ class MusicGenreQuerier:
     # returns list of PersonalityDimension objects
     def process_query_result(self, result_list):
         dimension_correlates = {} #key personality dimension objects by name for easy access
+        #print(result_list[0])
         for result in result_list:
-            print(result["type"])
-            dimension_name = result["dimension"]
+            #print(result["type"])
+            dimension_name = result["dimension_name"]
             dimension = dimension_correlates.get(dimension_name, PersonalityDimension(dimension_name))
-            if result["type"] == self.pos_relation_name:
+            if result["correlation_type"] == self.pos_relation_name:
                 dimension.pos_correlation_genres.add(result["genre"])
             else:
                 dimension.neg_correlation_genres.add(result["genre"])
@@ -157,7 +160,8 @@ class MusicGenreQuerier:
             dimension_results = self.process_query_result(formatted_results)
             pos_genres = [genre for dimension in dimension_results for genre in dimension.pos_correlation_genres]
             neg_genres = [genre for dimension in dimension_results for genre in dimension.neg_correlation_genres]
-            return (pos_genres, neg_genres)
+            #return (pos_genres, neg_genres)
+            return(pos_genres[:5],neg_genres[:5])
         else:
             if high_scoring_traits == []:
                 return ([],[])
@@ -168,8 +172,9 @@ class MusicGenreQuerier:
 
 if __name__ == "__main__":
     music_querier = MusicGenreQuerier()
+    music_querier.update_model("3be676ec-c791-4449-96c2-69c8468272b2")
     print(music_querier.get_genres(["Openness to experience"]))
-    print(music_querier.get_genres(["Openness to experience", "Agreeableness"], dummy=False))
+    print(music_querier.get_genres(["agreeableness", "openness"], dummy=False))
     #sample_result = music_querier.discovery.query(music_querier.environment_id, music_querier.collection_id,natural_language_query= "openness",
     #                                           aggregation="nested(enriched_text.entities).filter(enriched_text.entities.type::\"Genre\").term(enriched_text.entities.text,count:5)").get_result()
     #json.dump(sample_result,open("../test/discovery_music_tests/empty_dummy_query_result", "w"), indent=2)
