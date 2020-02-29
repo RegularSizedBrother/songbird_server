@@ -105,10 +105,11 @@ class MusicGenreQuerier:
                                         relation["type"] == self.pos_relation_name or relation[
                                             "type"] == self.neg_relation_name] #Only get PositiveCorrelation and NegativeCorrelation results
             for correlation in relevant_music_relations:
-                print("Custom Correlation Found") #TODO: remove diagnostic print
+                #print("Custom Correlation Found") #TODO: remove diagnostic print
                 dimension_name = correlation["arguments"][0]["text"] #Dimension is argument 0
                 genre = correlation["arguments"][1]["text"] #Genre is argument 1
                 correlation_type = correlation["type"]
+                print(correlation_type)
                 relation_list.append({"correlation_type": correlation_type, "genre": genre, "dimension_name":dimension_name})
         return relation_list
 
@@ -129,6 +130,7 @@ class MusicGenreQuerier:
     def process_query_result(self, result_list):
         dimension_correlates = {} #key personality dimension objects by name for easy access
         for result in result_list:
+            print(result["type"])
             dimension_name = result["dimension"]
             dimension = dimension_correlates.get(dimension_name, PersonalityDimension(dimension_name))
             if result["type"] == self.pos_relation_name:
@@ -167,7 +169,7 @@ class MusicGenreQuerier:
 if __name__ == "__main__":
     music_querier = MusicGenreQuerier()
     print(music_querier.get_genres(["Openness to experience"]))
-    print(music_querier.get_genres(["Openness to experience", "Agreeableness"], dummy=True))
+    print(music_querier.get_genres(["Openness to experience", "Agreeableness"], dummy=False))
     #sample_result = music_querier.discovery.query(music_querier.environment_id, music_querier.collection_id,natural_language_query= "openness",
     #                                           aggregation="nested(enriched_text.entities).filter(enriched_text.entities.type::\"Genre\").term(enriched_text.entities.text,count:5)").get_result()
     #json.dump(sample_result,open("../test/discovery_music_tests/empty_dummy_query_result", "w"), indent=2)
