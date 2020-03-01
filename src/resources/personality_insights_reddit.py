@@ -34,7 +34,7 @@ class RedditPersonality:
             return None
     
         f = open(filename, encoding = 'utf-8') 
-        profile = personality_insights.profile(
+        profile = RedditPersonality.personality_insights.profile(
                   " ".join(f),
                   'application/json',
                   content_type='text/plain',
