@@ -28,7 +28,7 @@ def test_get_genres_all5():
     music_querier = MusicGenreQuerier()
     actual_genres = music_querier.get_genres(["openess to experience", "agreeableness", "extroversion", "conscientiousness", "neuroticism"], dummy=True)
     set_actual_genres = (set(actual_genres[0]),set(actual_genres[1]))
-    set_expected_genres = (set(["rock", "energetic", "rebellious", "rhythmic", "conventional"]), set())
+    set_expected_genres = (set(["rock", "jazz", "pop", "energetic", "classical"]), set())
     assert set_expected_genres == set_actual_genres
 
 def test_process_query_results():
