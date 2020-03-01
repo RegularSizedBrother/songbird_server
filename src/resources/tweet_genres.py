@@ -15,9 +15,29 @@ def threshold(big_5_profile, max = False, num_max = 1, boundary = .75):
         profile_counter = Counter(big_5_profile)
         max_mappings = profile_counter.most_common(num_max)
         traits = [mapping[0] for mapping in max_mappings]
+    #else:
+    #    traits = [trait for trait in big_5_profile if big_5_profile[trait] >= boundary]
+    #return traits
     else:
-        traits = [trait for trait in big_5_profile if big_5_profile[trait] >= boundary]
-    return traits
+        mean = 0
+        vals = []
+        for trait in big_5_profile:
+            mean = mean + big_5_profile[trait]
+            vals.append(big_5_profile[trait])
+        mean = mean/5.0
+        std_dev = 0
+        for val in vals:
+            new_val = val - mean
+            new_val = new_val * new_val
+            std_dev = std_dev + new_val
+        std_dev = std_dev/4.0
+        traits = []
+        for trait in big_5_profile:
+            if big_5_profile[trait] >= mean+std_dev or big_5_profile[trait] <= mean-std_dev:
+                traits.append(trait)
+        return traits
+
+
 
 #big_5_profile: dictionary of string(personality dimension) => float(percentile, 0 to 1)
 #Returns list of Music Discovery genres/aspects from traits in big_5_profile
