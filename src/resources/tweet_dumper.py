@@ -31,9 +31,7 @@ class TwitterDumper:
 			new_tweets = api.user_timeline(screen_name = screen_name,count=200)
 		except:
 			print("Error: Invalid user")
-			t = open('%s_tweets.csv' % screen_name, 'w')
-			t.close()
-			return
+			return "error" # really bad practice, will fix after Thursday
 		
 		#save most recent tweets
 		alltweets.extend(new_tweets)
@@ -60,7 +58,7 @@ class TwitterDumper:
 		outtweets = [[tweet.id_str, tweet.created_at, tweet.text] for tweet in alltweets]
 		
 		#write the csv	
-		with open('%s_tweets.csv' % screen_name, 'w', encoding = "utf-8") as f:
+		with open('tmp/%s_tweets.csv' % screen_name, 'w', encoding = "utf-8") as f:
 			writer = csv.writer(f)
 			writer.writerow(["id", "created_at", "text"])
 			writer.writerows(outtweets)
