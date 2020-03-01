@@ -31,12 +31,11 @@ def test_get_genres_all5():
     set_expected_genres = (set(["rock", "jazz", "pop", "energetic", "classical"]), set())
     assert set_expected_genres == set_actual_genres
 
+
 def test_process_query_results():
     music_querier = MusicGenreQuerier()
     #actual_results =music_querier.get_genre_entities_from_result(json.load(open("empty_dummy_query_result.json")))
     actual_results =music_querier.get_genre_entities_from_result(json.load(open(dummy_file)))
     expected_results = set()
     assert expected_results == actual_results
-
-
 
