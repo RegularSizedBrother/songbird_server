@@ -43,15 +43,21 @@ class TwitterPersonality:
                 t.write('%s\n' % row)
     
         f = open("./tweets.txt", encoding = 'utf-8') 
-        profile = TwitterPersonality.personality_insights.profile(
-            " ".join(f),
-            'application/json',
-            content_type='text/plain',
-            consumption_preferences=True,
-            raw_scores=True
-        ).get_result()
+        string = " ".join(f)
+
+        if(len(string.split()) < 100):
+            profile = None
+        else:
+            profile = TwitterPersonality.personality_insights.profile(
+                string,
+                'application/json',
+                content_type='text/plain',
+                consumption_preferences=True,
+                raw_scores=True
+            ).get_result()
 
         f.close()
+        os.remove(filename)
         return profile
 
   
