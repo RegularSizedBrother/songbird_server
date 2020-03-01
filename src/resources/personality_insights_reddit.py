@@ -2,9 +2,6 @@ from ibm_watson import PersonalityInsightsV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import os
 from os.path import join
-import numpy as np
-import pandas
-import csv
 import json
 
 #Places IBM Watson profile big 5 trait percentiles into a list (percentile for) [agreeableness, conscientiousness, extraversion, emotional range, openness]
@@ -31,3 +28,19 @@ class RedditPersonality:
         for trait in big5_objects:
             big5_vector[trait["name"]] = trait["percentile"]
         return big5_vector
+    
+    def get_profile(self, filename):
+        if os.path.getsize(filename) <= 0:
+            return None
+    
+        f = open(filename, encoding = 'utf-8') 
+        profile = personality_insights.profile(
+                  " ".join(f),
+                  'application/json',
+                  content_type='text/plain',
+                  consumption_preferences=True,
+                  raw_scores=True
+                  ).get_result()
+
+        f.close()
+        return profile
