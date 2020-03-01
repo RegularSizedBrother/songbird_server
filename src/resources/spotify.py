@@ -116,6 +116,8 @@ def filter_seeds(seeds=None, genres=[], features=[], prev_features=[]):
                     # print('Feature: ' + str(entry))
                 elif entry is 'rap' and 'hip-hop' not in genres and len(genres) < 5:
                     genres.append('hip-hop')
+                elif entry is '/funk' and 'funk' not in genres and len(genres) < 5:
+                    genres.append('funk')
 
 
 # Run overall workflow for spotify portion
