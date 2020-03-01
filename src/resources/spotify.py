@@ -46,11 +46,13 @@ def get_recommendations(genres=[], pos_features=[], neg_features=[]):
 
         for pos in pos_features:
             if (pos in spotify_config.RATIO_FEATURES):
-                parameters['target_' + pos] = 0.95
+                parameters['target_' + pos] = spotify_config.HIGH_TARGET
+                parameters['min_' + pos] = spotify_config.HIGH_TARGET-spotify_config.THRESHOLD
 
         for neg in neg_features:
             if (neg in spotify_config.RATIO_FEATURES):
-                parameters['target_' + neg] = 0.05
+                parameters['target_' + neg] = spotify_config.LOW_TARGET
+                parameters['max_' + neg] = spotify_config.LOW_TARGET+spotify_config.THRESHOLD
 
         return sp.recommendations(**parameters)
 

@@ -61,8 +61,8 @@ class Spotify_Unit_Tests(unittest.TestCase):
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
-    def test_generate_playlist_pos_seeds_live(self):
-        test_url = spotify.generate_playlist(handle='@LiveMusic', seeds=(["cheese", "rock", "liveness"], []))
+    def test_generate_playlist_pos_seeds_acoustic(self):
+        test_url = spotify.generate_playlist(handle='@AcousticMusic', seeds=(["cheese", "acousticness", "rock", "alt-rock", "garage", "indie"], []))
         expected_prefix = spotify_config.PLAYLIST_PREFIX
         assert test_url.find(expected_prefix) == 0
         assert len(test_url) > len(expected_prefix)
@@ -73,7 +73,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
             spotify_config.PLAYLIST_PREFIX):])
 
     def test_generate_playlist_neg_seeds_neg_feature(self):
-        test_url = spotify.generate_playlist(handle='@LowEnergy', seeds=(["cheese", "rock"], ["energy"]))
+        test_url = spotify.generate_playlist(handle='@LowAccousitcs', seeds=(["cheese", "rock"], ["acousticness"]))
         expected_prefix = spotify_config.PLAYLIST_PREFIX
         assert test_url.find(expected_prefix) == 0
         assert len(test_url) > len(expected_prefix)
@@ -111,8 +111,8 @@ class Spotify_Unit_Tests(unittest.TestCase):
 
     def test_generate_playlist_lots_of_seeds(self):
         test_url = spotify.generate_playlist(handle='@ManySeeds', seeds=(
-        ["cheese",  "valence", "loudness", "test", "Franklin", "rock", "hip-hop", "jazz", "danaceability"],
-        ["classical", "loudness", "energy", "wow", "acousticness"]))
+        ["cheese",  "valence", "loudness", "test", "Franklin", "rock", "hip-hop", "danceability", "metal", "alt-rock"],
+        ["classical", "loudness", "wow", "acousticness"]))
         expected_prefix = spotify_config.PLAYLIST_PREFIX
         assert test_url.find(expected_prefix) == 0
         assert len(test_url) > len(expected_prefix)
@@ -236,6 +236,30 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert genres == expected_genres
         assert features == expected_features
         assert prev_features == expected_prev_features
+
+    def test_filter_seeds_many(self):
+        seeds = (["cheese", "valence", "loudness", "test", "Franklin", "rock", "hip-hop", "jazz", "danceability"],
+            ["classical", "loudness", "wow", "acousticness"])
+        pos_seeds = seeds[0]
+        neg_seeds = seeds[1]
+        pos_genres = []
+        pos_features = []
+        expected_pos_genres = ['rock', 'hip-hop', 'jazz']
+        expected_pos_features = ['valence', 'loudness', 'danceability']
+
+        spotify.filter_seeds(pos_seeds, pos_genres, pos_features)
+
+        assert pos_genres == expected_pos_genres
+        assert pos_features == expected_pos_features
+
+        neg_features = []
+        expected_neg_features = ['acousticness']
+        expected_pos_features = ['valence', 'danceability']
+
+        spotify.filter_seeds(neg_seeds, [], neg_features, prev_features=pos_features)
+
+        assert neg_features == expected_neg_features
+        assert pos_features == expected_pos_features
 
     def test_recommendation_sorcery(self):
         genres = ['rock', 'pop']

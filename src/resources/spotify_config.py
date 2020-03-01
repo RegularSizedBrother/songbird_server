@@ -16,6 +16,10 @@ SOUNDS_OF_SILENCE = ['3CepTOU9Y7FezTt0CF3lCw', '1Cj2vqUwlJVG27gJrun92y', '0ZFeVC
 
 PLAYLIST_SIZE = 20
 
+HIGH_TARGET = 0.95
+LOW_TARGET = 0.05
+THRESHOLD = 0.2
+
 # Test values
 ACCESS_TOKEN_LEN = 244
 PLAYLIST_PREFIX = 'https://open.spotify.com/playlist/'
