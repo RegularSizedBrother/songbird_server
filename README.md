@@ -29,17 +29,17 @@ python main.py
 pytest
 
 ```
-## tweet_dumper.py execution
+## tweet/reddit_dumper.py execution
 
 ```
-python tweet_dumper.py twitter_account_name
+python tweet/reddit_dumper.py twitter/reddit_account_name
 
-ex: python tweet_dumper.py BarackObama
+ex: python tweet/reddit_dumper.py BarackObama/thisisbillgates
 ```
 
-## personality_insights_twitter.py guide
+## personality_insights_twitter/reddit.py guide
 ```
-python personality_insights_twitter.py
+python personality_insights_twitter/reddit.py
 
 The sample file is BarackObama_tweets.csv. The sample output:
 ['Openness', 0.8308440292711101, 'Conscientiousness', 0.9861259293312097, 'Extraversion', 0.7305364516013685, 'Agreeableness', 0.6430794048245583, 'Emotional range', 0.3100944253262048]
