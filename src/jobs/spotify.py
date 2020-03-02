@@ -11,9 +11,10 @@ import src.resources.tweet_genres as tweet_genres
 def process_spotify(id):
     app = base_app.create_app()
     with app.app_context():
-        print("starting spotify job for id %i" % id)
+        print("### Starting spotify job for id %i ###" % id)
 
         recommendation = Recommendation.query.get(id)
+        print(recommendation)
 
         attributes = {
             "Openness": recommendation.openness / 100,
@@ -29,4 +30,4 @@ def process_spotify(id):
 
         db.session.commit()
 
-        print("finished spotify job for id %i" % id)
+        print("### Finished spotify job for id %i ###" % id)

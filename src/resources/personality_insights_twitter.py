@@ -33,7 +33,23 @@ class TwitterPersonality:
             big5_vector[trait["name"]] = trait["percentile"]
         return big5_vector
 
-    def get_profile(self, filename):
+    def get_profile_from_tweets(self, tweets):
+        string = " ".join(tweets)
+
+        if(len(string.split()) < 100):
+            profile = None
+        else:
+            profile = TwitterPersonality.personality_insights.profile(
+                string,
+                'application/json',
+                content_type='text/plain',
+                consumption_preferences=True,
+                raw_scores=True
+            ).get_result()
+
+        return profile
+
+    def get_profile_from_file(self, filename):
         if os.path.getsize(filename) <= 0:
             return None
         data = pandas.read_csv(filename)

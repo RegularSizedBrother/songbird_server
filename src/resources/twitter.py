@@ -3,8 +3,7 @@ from flask import request
 
 import src.jobs.twitter as twitter
 
-from src.models.shared import db
-from src.models.recommendation import Recommendation
+from src.models.recommendation import Recommendation, db
 
 parser = reqparse.RequestParser()
 parser.add_argument('handle')
@@ -15,7 +14,7 @@ class Twitter(Resource):
 
         record = Recommendation(handle=args["handle"])
         db.session.add(record)
-        db.session.commit();
+        db.session.commit()
 
         twitter.process_twitter(record.id)
 

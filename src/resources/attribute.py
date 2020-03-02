@@ -11,6 +11,7 @@ class Attribute(Resource):
         elif(recommendation.openness is not None):
             return {
                 "error": False,
+                "finished": recommendation.finished,
                 "data": {
                     "Openness": recommendation.openness,
                     "Conscientiousness": recommendation.conscientiousness,
@@ -20,4 +21,4 @@ class Attribute(Resource):
                 }
             }
         else:
-            return {"wait": True}
+            return {"wait": True, "finished": False}
