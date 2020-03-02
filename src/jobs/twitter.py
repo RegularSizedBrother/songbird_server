@@ -1,4 +1,5 @@
-import src.app as base_app
+# import src.app as base_app
+from src import app as base_app
 
 from src.models.shared import db
 from src.models.recommendation import Recommendation
