@@ -13,13 +13,14 @@ from src.resources import spotify_config
 
 # May? require editing if/when we want to allow other users, but this should keep us logged into the Songbird account
 def get_access_token():
+    print(spotify_config.CACHE)
     sp_oauth = oauth2.SpotifyOAuth(spotify_config.SPOTIFY_CLIENT_ID, spotify_config.SPOTIFY_CLIENT_SECRET, spotify_config.SPOTIFY_REDIRECT_URI, scope=spotify_config.SCOPE, cache_path=spotify_config.CACHE)
     token_info = sp_oauth.get_cached_token()
 
     if token_info:
         access_token = token_info['access_token']
-    else:
-        access_token = spotipy.util.prompt_for_user_token(spotify_config.SONGBIRD_USER_EMAIL, scope=spotify_config.SCOPE, client_id=spotify_config.SPOTIFY_CLIENT_ID, client_secret=spotify_config.SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=spotify_config.CACHE)
+    #else:
+        #access_token = spotipy.util.prompt_for_user_token(spotify_config.SONGBIRD_USER_EMAIL, scope=spotify_config.SCOPE, client_id=spotify_config.SPOTIFY_CLIENT_ID, client_secret=spotify_config.SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=spotify_config.CACHE)
 
     return access_token
 
