@@ -19,8 +19,8 @@ def get_access_token():
 
     if token_info:
         access_token = token_info['access_token']
-    #else:
-        #access_token = spotipy.util.prompt_for_user_token(spotify_config.SONGBIRD_USER_EMAIL, scope=spotify_config.SCOPE, client_id=spotify_config.SPOTIFY_CLIENT_ID, client_secret=spotify_config.SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=spotify_config.CACHE)
+    else:
+        access_token = spotipy.util.prompt_for_user_token(spotify_config.SONGBIRD_USER_EMAIL, scope=spotify_config.SCOPE, client_id=spotify_config.SPOTIFY_CLIENT_ID, client_secret=spotify_config.SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=spotify_config.CACHE)
 
     return access_token
 

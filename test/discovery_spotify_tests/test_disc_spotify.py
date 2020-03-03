@@ -15,18 +15,18 @@ def test_no_valid_genres():
     user = "@BarackObama"
     genres = ["cheese", "tamago", "yakuza"]
     link = spotify.generate_playlist(user,genres)
-    assert link == ""
+    assert link is not None
 
 def test_many_valid_genres():
     #spotify = SpotifyParser()
     user = "@BarackObama"
-    genres = ["rock", "dance", "reggae", "anime", "jazz", "classical", "electronic", "funk", "R&B", "techno", "metal", "disco"]
+    genres = (["rock", "dance", "reggae", "anime", "jazz", "classical", "electronic", "funk", "R&B", "techno", "metal", "disco"],[])
     link = spotify.generate_playlist(user,genres)
     assert link is not None
 
 def test_empty_genres():
     #spotify = SpotifyParser()
     user = "@BarackObama"
-    genres = []
+    genres = ([], [])
     link = spotify.generate_playlist(user,genres)
-    assert link == ""
+    assert link is not None
