@@ -2,9 +2,6 @@
 # encoding: utf-8
 #Code taken from: https://gist.github.com/yanofsky/5436496
 
-import src.jobs.display as displayer
-import src.jobs.spotify as spotify
-
 from src.models.recommendation import Recommendation, db
 
 import tweepy #https://github.com/tweepy/tweepy
@@ -23,6 +20,7 @@ class TwitterDumper:
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_key, access_secret)
         self.api = tweepy.API(auth)
+        self.max_id = None
 
     def valid_user(self, handle):
         try:
@@ -31,62 +29,44 @@ class TwitterDumper:
         except:
             return False
 
-    def get_all_tweets(self, id):
-        recommendation = Recommendation.query.get(id)
-
-        #initialize a list to hold all the tweepy Tweets
-        alltweets = []
-
-        new_tweets = []
-        #make initial request for most recent tweets (200 is the maximum allowed count)
+    def get_next_tweets(self, handle, count=200):
         try:
-            new_tweets = self.api.user_timeline(screen_name=recommendation.handle, count=200)
+            if self.max_id is None:
+                print("Getting tweets for %s" % handle)
+                tweets = self.api.user_timeline(screen_name=handle, count=count)
+            else:
+                print("Getting tweets before %s" % (self.max_id))
+                tweets = self.api.user_timeline(screen_name=handle, count=count, max_id=self.max_id)
+
+            self.max_id = tweets[-1].id - 1
+            return [tweet.text for tweet in tweets]
+
         except:
             print("Error: Invalid user")
             return
 
-        #save most recent tweets
-        alltweets.extend(new_tweets)
+    def get_all_tweets(self, handle):
+        alltweets = []
+        while True:
+            new_tweets = self.get_next_tweets(handle)
 
-        #save the id of the oldest tweet less one
-        oldest = alltweets[-1].id - 1
+            if new_tweets is none:
+                break
 
-        #keep grabbing tweets until there are no tweets left to grab
-        while len(new_tweets) > 0:
-            print("getting tweets before %s" % (oldest))
+            tweets.extend(new_tweets)
 
-            #all subsiquent requests use the max_id param to prevent duplicates
-            new_tweets = self.api.user_timeline(screen_name=recommendation.handle, count=200,max_id=oldest)
+        return [tweet.text for tweet in tweets]
 
-            #save most recent tweets
-            alltweets.extend(new_tweets)
+    def write_tweets_to_file(self, filename, handle):
+        tweets = self.get_all_tweets(handle)
 
-            #update the id of the oldest tweet less one
-            oldest = alltweets[-1].id - 1
-
-            print("...%s tweets downloaded so far" % (len(alltweets)))
-
-            displayer.process_display(id, [tweet.text for tweet in alltweets])
-
-        recommendation.finished = True
-        db.session.commit()
-        spotify.process_spotify(id)
-
-        ##transform the tweepy tweets into a 2D array that will populate the csv
-        #outtweets = [[tweet.id_str, tweet.created_at, tweet.text] for tweet in alltweets]
-
-        ##write the csv
-        #with open('tmp/%s_tweets.csv' % screen_name, 'w', encoding = "utf-8") as f:
-        #    writer = csv.writer(f)
-        #    writer.writerow(["id", "created_at", "text"])
-        #    writer.writerows(outtweets)
-
-        #pass
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(tweets)
 
 if __name__ == '__main__':
     getter = TwitterDumper()
 
     if len(sys.argv) == 2:
-        getter.get_all_tweets(sys.argv[1])
+        getter.write_tweets_to_file("tmp/%s.txt" % sys.argv[1], sys.argv[1])
     else:
         print("Error: enter one username")

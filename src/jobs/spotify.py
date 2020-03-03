@@ -14,7 +14,6 @@ def process_spotify(id):
         print("### Starting spotify job for id %i ###" % id)
 
         recommendation = Recommendation.query.get(id)
-        print(recommendation)
 
         attributes = {
             "Openness": recommendation.openness / 100,

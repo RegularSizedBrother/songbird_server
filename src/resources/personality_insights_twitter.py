@@ -57,7 +57,7 @@ class TwitterPersonality:
         with open('tweets.txt', 'w', encoding = 'utf-8') as t:
             for row in tweets:
                 t.write('%s\n' % row)
-    
+
         f = open("./tweets.txt", encoding = 'utf-8') 
         string = " ".join(f)
 
@@ -75,11 +75,4 @@ class TwitterPersonality:
         f.close()
         os.remove(filename)
         return profile
-
-  
-#profile = traits_to_vector(get_profile("BarackObama_tweets.csv"))
-#print(profile)
-
-
-
 
