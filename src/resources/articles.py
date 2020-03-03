@@ -154,12 +154,18 @@ class MusicGenreQuerier:
     #Else: uses genres that have positive or negative correlation with traits in the corresponding positive/negative set
     def get_genres(self, high_scoring_traits, dummy=True):
         if not dummy:
-            query_result = self.discovery.query(self.environment_id, self.collection_id,
-                                                natural_language_query=" and ".join(high_scoring_traits)).get_result()
-            formatted_results = self.clean_results(query_result)
-            dimension_results = self.process_query_result(formatted_results)
-            pos_genres = [genre for dimension in dimension_results for genre in dimension.pos_correlation_genres]
-            neg_genres = [genre for dimension in dimension_results for genre in dimension.neg_correlation_genres]
+            if len(high_scoring_traits["pos"]) > 0:
+                query_result = self.discovery.query(self.environment_id, self.collection_id,
+                                                natural_language_query=" and ".join(high_scoring_traits["pos"])).get_result()
+                formatted_results = self.clean_results(query_result)
+                dimension_results = self.process_query_result(formatted_results)
+                pos_genres = [genre for dimension in dimension_results for genre in dimension.pos_correlation_genres]
+            if len(high_scoring_traits["neg"]) > 0:
+                query_result = self.discovery.query(self.environment_id, self.collection_id,
+                                                natural_language_query=" and ".join(high_scoring_traits["neg"])).get_result()
+                formatted_results = self.clean_results(query_result)
+                dimension_results = self.process_query_result(formatted_results)
+                neg_genres = [genre for dimension in dimension_results for genre in dimension.neg_correlation_genres]
             #return (pos_genres, neg_genres)
             return(pos_genres[:5],neg_genres[:5])
         else:

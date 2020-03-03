@@ -31,10 +31,14 @@ def threshold(big_5_profile, max = False, num_max = 1, boundary = .75):
             new_val = new_val * new_val
             std_dev = std_dev + new_val
         std_dev = std_dev/4.0
-        traits = []
+        traits = {}
+        traits["pos"] = []
+        traits["neg"] = []
         for trait in big_5_profile:
-            if big_5_profile[trait] >= mean+std_dev or big_5_profile[trait] <= mean-std_dev:
-                traits.append(trait)
+            if big_5_profile[trait] >= mean+std_dev:
+                traits["pos"].append(trait)
+            elif big_5_profile[trait] <= mean-std_dev:
+                traits["neg"].append(trait)
         return traits
 
 
@@ -43,13 +47,19 @@ def threshold(big_5_profile, max = False, num_max = 1, boundary = .75):
 #Returns list of Music Discovery genres/aspects from traits in big_5_profile
 def get_genres_from_profile(big_5_profile):
     traits = threshold(big_5_profile, max=False)
-    rename_traits = []
-    for trait in traits:
+    rename_traits = {}
+    rename_traits["pos"] = []
+    rename_traits["neg"] = []
+    for trait in traits["pos"]:
         if trait == "Emotional Range":
-            trait = "Neuroticism"
-        rename_traits.append(trait)
+           trait = "Neuroticism"
+        rename_traits["pos"].append(trait)
+    for trait in traits["neg"]:
+        if trait == "Emotional Range":
+           trait = "Neuroticism"
+        rename_traits["neg"].append(trait)
     music_genres = MusicGenreQuerier()
-    return music_genres.get_genres(traits)
+    return music_genres.get_genres(traits, dummy=False)
 if __name__ == "__main__":
     sample = {"Openness": .5, "Conscientiousness": .6, "Extraversion":.4, "Agreeableness":.7, "Emotional Range":.2}
     print(threshold(sample, max=True))
