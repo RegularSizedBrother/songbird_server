@@ -12,7 +12,7 @@ import src.jobs.spotify as spotify
 from math import floor
 
 @huey.task()
-def process_twitter(id):
+def process_twitter(id, max_iterations=5):
     app = base_app.create_app()
     with app.app_context():
         print("### Starting twitter job for id %i ###" % id)
@@ -27,14 +27,17 @@ def process_twitter(id):
             return
 
         tweets = []
+        iterations = 0
         while True:
             new_tweets = dumper.get_next_tweets(recommendation.handle)
 
-            if new_tweets is None:
+            if new_tweets is None or iterations == max_iterations:
                 break
 
+            iterations += 1
+
             tweets.extend(new_tweets)
-            print("Downloaded %i tweets" % len(tweets))
+            print("       Downloaded %i tweets" % len(tweets))
             profile = profile_getter.get_profile_from_tweets(tweets)
             traits = profile_getter.traits_to_vector(profile)
 
@@ -51,6 +54,8 @@ def process_twitter(id):
 
         recommendation.finished = True
         db.session.commit()
-        spotify.process_spotify(id)
+
+        if not recommendation.error:
+            spotify.process_spotify(id)
 
         print("### Finished twitter job for id %i ###" % id)

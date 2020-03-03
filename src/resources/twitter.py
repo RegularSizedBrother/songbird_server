@@ -16,6 +16,6 @@ class Twitter(Resource):
         db.session.add(record)
         db.session.commit()
 
-        twitter.process_twitter(record.id)
+        twitter.process_twitter(record.id, max_iterations=10)
 
         return {"handle_id": record.id}

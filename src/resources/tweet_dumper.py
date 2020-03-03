@@ -27,22 +27,23 @@ class TwitterDumper:
             self.api.get_user(handle)
             return True
         except:
+            print("       Invalid user")
             return False
 
     def get_next_tweets(self, handle, count=200):
         try:
             if self.max_id is None:
-                print("Getting tweets for %s" % handle)
+                print("       Getting tweets for %s" % handle)
                 tweets = self.api.user_timeline(screen_name=handle, count=count)
             else:
-                print("Getting tweets before %s" % (self.max_id))
+                print("       Getting tweets before %s" % (self.max_id))
                 tweets = self.api.user_timeline(screen_name=handle, count=count, max_id=self.max_id)
 
             self.max_id = tweets[-1].id - 1
             return [tweet.text for tweet in tweets]
 
         except:
-            print("Error: Invalid user")
+            print("       Error downloading tweets - probably reached the end")
             return
 
     def get_all_tweets(self, handle):

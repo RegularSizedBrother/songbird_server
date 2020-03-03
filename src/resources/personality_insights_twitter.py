@@ -37,6 +37,7 @@ class TwitterPersonality:
         string = " ".join(tweets)
 
         if(len(string.split()) < 100):
+            print("       Not enough words in tweets")
             profile = None
         else:
             profile = TwitterPersonality.personality_insights.profile(
