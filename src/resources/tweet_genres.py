@@ -42,7 +42,7 @@ def threshold(big_5_profile, max = False, num_max = 1, boundary = .75):
 #big_5_profile: dictionary of string(personality dimension) => float(percentile, 0 to 1)
 #Returns list of Music Discovery genres/aspects from traits in big_5_profile
 def get_genres_from_profile(big_5_profile):
-    traits = threshold(big_5_profile, max=True)
+    traits = threshold(big_5_profile, max=False)
     rename_traits = []
     for trait in traits:
         if trait == "Emotional Range":
