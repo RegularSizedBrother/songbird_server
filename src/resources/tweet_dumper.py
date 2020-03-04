@@ -2,6 +2,8 @@
 # encoding: utf-8
 #Code taken from: https://gist.github.com/yanofsky/5436496
 
+from src.models.recommendation import Recommendation, db
+
 import tweepy #https://github.com/tweepy/tweepy
 import csv
 import sys
@@ -14,61 +16,58 @@ access_secret = "T6ziZON3bTbF1W9LAwuOXNJxqBesBA1bfwAtzmIflR7jD"
 
 
 class TwitterDumper:
-	def get_all_tweets(self, screen_name):
-		#Twitter only allows access to a users most recent 3240 tweets with this method
-		
-		#authorize twitter, initialize tweepy
-		auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-		auth.set_access_token(access_key, access_secret)
-		api = tweepy.API(auth)
-		
-		#initialize a list to hold all the tweepy Tweets
-		alltweets = []	
-		
-		new_tweets = []
-		#make initial request for most recent tweets (200 is the maximum allowed count)
-		try:
-			new_tweets = api.user_timeline(screen_name = screen_name,count=200)
-		except:
-			print("Error: Invalid user")
-			return "error" # really bad practice, will fix after Thursday
-		
-		#save most recent tweets
-		alltweets.extend(new_tweets)
-		
-		#save the id of the oldest tweet less one
-		oldest = alltweets[-1].id - 1
-		
-		#keep grabbing tweets until there are no tweets left to grab
-		while len(new_tweets) > 0:
-			print("getting tweets before %s" % (oldest))
-			
-			#all subsiquent requests use the max_id param to prevent duplicates
-			new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=oldest)
-			
-			#save most recent tweets
-			alltweets.extend(new_tweets)
-			
-			#update the id of the oldest tweet less one
-			oldest = alltweets[-1].id - 1
-			
-			print("...%s tweets downloaded so far" % (len(alltweets)))
-		
-		#transform the tweepy tweets into a 2D array that will populate the csv	
-		outtweets = [[tweet.id_str, tweet.created_at, tweet.text] for tweet in alltweets]
-		
-		#write the csv	
-		with open('tmp/%s_tweets.csv' % screen_name, 'w', encoding = "utf-8") as f:
-			writer = csv.writer(f)
-			writer.writerow(["id", "created_at", "text"])
-			writer.writerows(outtweets)
-		
-		pass
+    def __init__(self):
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_key, access_secret)
+        self.api = tweepy.API(auth)
+        self.max_id = None
 
-	if __name__ == '__main__':
-		getter = TwitterDumper()
-		#get tweets for username passed at command line
-		if len(sys.argv) == 2:
-			getter.get_all_tweets(sys.argv[1])
-		else:
-			print("Error: enter one username")
+    def valid_user(self, handle):
+        try:
+            self.api.get_user(handle)
+            return True
+        except:
+            print("       Invalid user")
+            return False
+
+    def get_next_tweets(self, handle, count=200):
+        try:
+            if self.max_id is None:
+                print("       Getting tweets for %s" % handle)
+                tweets = self.api.user_timeline(screen_name=handle, count=count)
+            else:
+                print("       Getting tweets before %s" % (self.max_id))
+                tweets = self.api.user_timeline(screen_name=handle, count=count, max_id=self.max_id)
+
+            self.max_id = tweets[-1].id - 1
+            return [tweet.text for tweet in tweets]
+
+        except:
+            print("       Error downloading tweets - probably reached the end")
+            return
+
+    def get_all_text(self, handle):
+        tweets = []
+        while True:
+            new_tweets = self.get_next_tweets(handle)
+
+            if new_tweets is None:
+                break
+
+            tweets.extend(new_tweets)
+
+        return tweets
+
+    def write_tweets_to_file(self, filename, handle):
+        tweets = self.get_all_tweets(handle)
+
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(tweets)
+
+if __name__ == '__main__':
+    getter = TwitterDumper()
+
+    if len(sys.argv) == 2:
+        getter.write_tweets_to_file("tmp/%s.txt" % sys.argv[1], sys.argv[1])
+    else:
+        print("Error: enter one username")

@@ -1,3 +1,3 @@
-from huey import RedisHuey
+from huey import SqliteHuey
 
-huey = RedisHuey('songbird')
+huey = SqliteHuey()

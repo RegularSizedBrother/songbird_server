@@ -132,6 +132,8 @@ dmypy.json
 
 # database
 *.db
+*.db-shm
+*.db-wal
 j8ffbezos_tweets.csv
 
 # temporary files
