@@ -104,7 +104,7 @@ def filter_seeds(seeds=None, genres=[], features=[], prev_features=[]):
             genres_dict = sp.recommendation_genre_seeds()
             available_genres = genres_dict.get('genres')
             for entry in seeds:
-                if entry in available_genres and len(genres) < 5 and entry not in genres:
+                if entry in available_genres and len(genres) < 5 and entry not in genres and entry is not 'soundtracks':
                     genres.append(entry)
                 elif entry in spotify_config.FEATURES_LIST and entry not in features:
                     if entry not in prev_features:
