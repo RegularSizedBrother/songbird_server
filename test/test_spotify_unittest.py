@@ -45,7 +45,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_url) > len(expected_prefix)
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
-        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_playlist_tracks.get('items')) >= spotify_config.MIN_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -57,7 +57,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_url) > len(expected_prefix)
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
-        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_playlist_tracks.get('items')) >= spotify_config.MIN_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -68,7 +68,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_url) > len(expected_prefix)
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
-        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_playlist_tracks.get('items')) >= spotify_config.MIN_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -79,7 +79,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_url) > len(expected_prefix)
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
-        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_playlist_tracks.get('items')) >= spotify_config.MIN_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -90,7 +90,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_url) > len(expected_prefix)
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
-        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_playlist_tracks.get('items')) >= spotify_config.MIN_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -118,7 +118,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(test_url) > len(expected_prefix)
         sp = spotipy.Spotify(spotify.get_access_token())
         test_playlist_tracks = sp.playlist_tracks(playlist_id=test_url)
-        assert len(test_playlist_tracks.get('items')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_playlist_tracks.get('items')) >= spotify_config.MIN_SIZE
         sp.user_playlist_unfollow(user=spotify_config.SONGBIRD_USER_ID, playlist_id=test_url[len(
             spotify_config.PLAYLIST_PREFIX):])
 
@@ -128,7 +128,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         neg_features = []
         test_recs = spotify.get_recommendations(genres=genres, pos_features=pos_features, neg_features=neg_features)
         assert test_recs is not None
-        assert len(test_recs.get('tracks')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_recs.get('tracks')) >= spotify_config.MIN_SIZE
 
     def test_get_recommendations_no_params(self):
         test_recs = spotify.get_recommendations()
@@ -278,7 +278,7 @@ class Spotify_Unit_Tests(unittest.TestCase):
         test_recs = sp.recommendations(**magic)
 
         assert test_recs is not None
-        assert len(test_recs.get('tracks')) == spotify_config.PLAYLIST_SIZE
+        assert len(test_recs.get('tracks')) >= spotify_config.MIN_SIZE
 
 
 if __name__ == '__main__':
