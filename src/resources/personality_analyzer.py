@@ -9,7 +9,7 @@ import json
 
 #Places IBM Watson profile big 5 trait percentiles into a list (percentile for) [agreeableness, conscientiousness, extraversion, emotional range, openness]
 #assumes fixed order in big5
-class TwitterPersonality:
+class PersonalityAnalyzer:
     authenticator = IAMAuthenticator('ALlGKY01Pa-PQHPoQeBULOGX-180mT7iGjuvD4cx9Mlq')
     personality_insights = PersonalityInsightsV3(
         version='2017-10-13',
@@ -21,26 +21,19 @@ class TwitterPersonality:
         if profile is None:
             return {}
         big5_objects = profile["personality"]
-        '''
-        big5_vector = []
-
-        for trait in big5_objects:
-            big5_vector.append(trait["name"])
-            big5_vector.append(trait["percentile"])
-        '''
         big5_vector = {}
         for trait in big5_objects:
             big5_vector[trait["name"]] = trait["percentile"]
         return big5_vector
 
-    def get_profile_from_tweets(self, tweets):
-        string = " ".join(tweets)
+    def get_profile(self, text):
+        string = " ".join(text)
 
         if(len(string.split()) < 100):
-            print("       Not enough words in tweets")
+            print("       Not enough words to analyze")
             profile = None
         else:
-            profile = TwitterPersonality.personality_insights.profile(
+            profile = PersonalityAnalyzer.personality_insights.profile(
                 string,
                 'application/json',
                 content_type='text/plain',
@@ -50,6 +43,7 @@ class TwitterPersonality:
 
         return profile
 
+    # Currently borken
     def get_profile_from_file(self, filename):
         if os.path.getsize(filename) <= 0:
             return None
@@ -59,21 +53,8 @@ class TwitterPersonality:
             for row in tweets:
                 t.write('%s\n' % row)
 
-        f = open("./tweets.txt", encoding = 'utf-8') 
+        f = open(filename, encoding = 'utf-8') 
         string = " ".join(f)
-
-        if(len(string.split()) < 100):
-            profile = None
-        else:
-            profile = TwitterPersonality.personality_insights.profile(
-                string,
-                'application/json',
-                content_type='text/plain',
-                consumption_preferences=True,
-                raw_scores=True
-            ).get_result()
-
         f.close()
-        os.remove(filename)
-        return profile
 
+        return get_profile(string)

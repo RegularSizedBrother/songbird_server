@@ -46,17 +46,17 @@ class TwitterDumper:
             print("       Error downloading tweets - probably reached the end")
             return
 
-    def get_all_tweets(self, handle):
-        alltweets = []
+    def get_all_text(self, handle):
+        tweets = []
         while True:
             new_tweets = self.get_next_tweets(handle)
 
-            if new_tweets is none:
+            if new_tweets is None:
                 break
 
             tweets.extend(new_tweets)
 
-        return [tweet.text for tweet in tweets]
+        return tweets
 
     def write_tweets_to_file(self, filename, handle):
         tweets = self.get_all_tweets(handle)

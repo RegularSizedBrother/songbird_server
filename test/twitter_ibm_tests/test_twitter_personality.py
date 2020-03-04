@@ -1,5 +1,5 @@
 from src.resources.tweet_dumper import TwitterDumper
-from src.resources.personality_insights_twitter import TwitterPersonality
+from src.resources.personality_analyzer import PersonalityAnalyzer
 import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
