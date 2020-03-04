@@ -14,7 +14,6 @@ parser.add_argument('source')
 class Twitter(Resource):
     def post(self):
         args = parser.parse_args()
-        print(args)
 
         record = Recommendation(handle=args["handle"])
         db.session.add(record)
