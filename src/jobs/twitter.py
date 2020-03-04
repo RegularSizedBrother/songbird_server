@@ -1,39 +1,40 @@
-from src.app import app, db
+import src.app as base_app
+
+from src.models.shared import db
 from src.models.recommendation import Recommendation
 from src.resources.tweet_dumper import TwitterDumper
 from src.resources.personality_insights_twitter import TwitterPersonality
 
-import rq
-from redis import Redis
+from src.jobs.config import huey
+import src.jobs.spotify as spotify
+
 from math import floor
 
-import time
-import random
-
-def process(id):
+@huey.task()
+def process_twitter(id):
+    app = base_app.create_app()
     with app.app_context():
         print("starting twitter job for id %i" % id)
 
         recommendation = Recommendation.query.get(id)
 
-        tw = TwitterDumper()
-        status = tw.get_all_tweets(recommendation.handle)
+        dumper = TwitterDumper()
+        status = dumper.get_all_tweets(recommendation.handle)
 
         if(status != "error"):
-            tp = TwitterPersonality()
-            p = tp.get_profile("tmp/%s_tweets.csv" % recommendation.handle)
+            profile_getter = TwitterPersonality()
+            profile = profile_getter.get_profile("tmp/%s_tweets.csv" % recommendation.handle)
 
-            if p is not None:
-                v = tp.traits_to_vector(p)
+            if profile is not None:
+                traits = profile_getter.traits_to_vector(profile)
 
-                recommendation.openness = floor(v['Openness'] * 100)
-                recommendation.conscientiousness = floor(v['Conscientiousness'] * 100)
-                recommendation.extraversion = floor(v['Extraversion'] * 100)
-                recommendation.agreeableness = floor(v['Agreeableness'] * 100)
-                recommendation.neuroticism = floor(v['Emotional range'] * 100)
+                recommendation.openness = floor(traits['Openness'] * 100)
+                recommendation.conscientiousness = floor(traits['Conscientiousness'] * 100)
+                recommendation.extraversion = floor(traits['Extraversion'] * 100)
+                recommendation.agreeableness = floor(traits['Agreeableness'] * 100)
+                recommendation.neuroticism = floor(traits['Emotional range'] * 100)
 
-                queue = rq.Queue('songbird', connection=Redis.from_url('redis://'))
-                job = queue.enqueue('src.jobs.spotify.process', id)
+                spotify.process_spotify(id)
             else:
                 recommendation.error = True
         else:

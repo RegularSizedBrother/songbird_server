@@ -1,18 +1,21 @@
-from src.app import app, db
+import src.app as base_app
+from src.models.shared import db
 from src.models.recommendation import Recommendation
 
-import src.resources.spotify as spotify
-import src.resources.tweet_genres as tg
-import time
-import random
-import string
+from src.jobs.config import huey
 
-def process(id):
+import src.resources.spotify as spotify
+import src.resources.tweet_genres as tweet_genres
+
+@huey.task()
+def process_spotify(id):
+    app = base_app.create_app()
     with app.app_context():
         print("starting spotify job for id %i" % id)
+
         recommendation = Recommendation.query.get(id)
 
-        t = {
+        attributes = {
             "Openness": recommendation.openness / 100,
             "Conscientiousness": recommendation.conscientiousness / 100,
             "Extraversion": recommendation.extraversion / 100,
@@ -20,10 +23,8 @@ def process(id):
             "Emotional Range": recommendation.neuroticism / 100
         }
 
-        genres = tg.get_genres_from_profile(t)
-
+        genres = tweet_genres.get_genres_from_profile(attributes)
         playlist = spotify.generate_playlist(recommendation.handle, genres)
-
         recommendation.playlist = playlist
 
         db.session.commit()
