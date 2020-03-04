@@ -21,6 +21,8 @@ HIGH_TARGET = 0.95
 LOW_TARGET = 0.05
 THRESHOLD = 0.2
 
+US_CODE = 'US'
+
 # Test values
 ACCESS_TOKEN_LEN = 244
 PLAYLIST_PREFIX = 'https://open.spotify.com/playlist/'

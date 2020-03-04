@@ -42,7 +42,7 @@ def get_recommendations(genres=[], pos_features=[], neg_features=[]):
         # VALUE: value of parameter
         # MUST USE ** to 'unpack' dict into parameter form
         # example in 'test_spotify_unittest.py' - search 'sorcery'
-        parameters = dict(seed_genres=genres, limit=spotify_config.PLAYLIST_SIZE)
+        parameters = dict(seed_genres=genres, limit=spotify_config.PLAYLIST_SIZE, market=spotify_config.US_CODE)
 
         for pos in pos_features:
             if (pos in spotify_config.RATIO_FEATURES):
