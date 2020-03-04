@@ -5,7 +5,6 @@ import os
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 empty_file = os.path.join(curr_dir, 'empty_tweets.csv')
 
-
 def test_more_than_cap_twitter():
     user = "BarackObama"
     file_result = "tmp/%s_tweets.csv" % user
