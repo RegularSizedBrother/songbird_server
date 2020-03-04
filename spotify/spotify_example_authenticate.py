@@ -26,6 +26,8 @@ def index():
         access_token = token_info['access_token']
     else:
         url = request.url
+        print("URL:")
+        print(url)
         code = sp_oauth.parse_response_code(url)
         if code:
             print("Found Spotify auth code in Request URL! Trying to get valid access token...")
