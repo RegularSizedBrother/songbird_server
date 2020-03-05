@@ -7,9 +7,9 @@ from collections import Counter
 # max: whether to return the trait with the maximum percentile in the profile(true/false)
 # num_max: number of maximum traits to return if max is True. Must be in the range [1,5]
 # boundary: if max is false, returns all traits with percentile above boundary
-# Returns a list P of up to 5 strings, where each string is a personality dimension.
-#       If max is True, p is in P iff p has one of the num_max highest percentile of all the traits in big_5_profile
-#       If max is False, p is in P iff p has a percentile in big_5_profile greater than or equal to boundary
+# Returns a dictionary of traits sorted by positive/negative correlations
+#       If max is True, trait returned has one of the num_max highest percentile of all the traits in big_5_profile
+#       If max is False, a trait is included if it differs from the mean percentile of all traits by at least one standard deviation
 def threshold(big_5_profile, max = False, num_max = 1, boundary = .75):
     if max:
         profile_counter = Counter(big_5_profile)
@@ -44,7 +44,7 @@ def threshold(big_5_profile, max = False, num_max = 1, boundary = .75):
 
 
 #big_5_profile: dictionary of string(personality dimension) => float(percentile, 0 to 1)
-#Returns list of Music Discovery genres/aspects from traits in big_5_profile
+#Returns dictionary with keys "pos" and "neg" to list entries of personality traits
 def get_genres_from_profile(big_5_profile):
     traits = threshold(big_5_profile, max=False)
     rename_traits = {}
