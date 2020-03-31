@@ -5,6 +5,7 @@ This file contains all the tools and functions needed for spotify integration.
 import spotipy
 from spotipy import oauth2
 from src.resources import spotify_config
+import random
 
 
 # Request permissions?
@@ -118,6 +119,65 @@ def filter_seeds(seeds=None, genres=[], features=[], prev_features=[]):
                     genres.append('hip-hop')
                 elif entry is '/funk' and 'funk' not in genres and len(genres) < 5:
                     genres.append('funk')
+                elif entry is 'r&b' and 'r-n-b' not in genres and len(genres) < 5:
+                    genres.append('funk')
+                elif entry is 'R&B' and 'r-n-b' not in genres and len(genres) < 5:
+                    genres.append('r-n-b')
+                elif entry is 'instrumental' and 'instrumentalness' not in features:
+                    if 'instrumentalness' not in prev_features:
+                        features.append('instrumentalness')
+                    else:
+                        prev_features.remove('instrumentalness')
+                elif entry is 'happy' and 'valence' not in features:
+                    if 'valence' not in prev_features:
+                        features.append('valence')
+                    else:
+                        prev_features.remove('valence')
+                elif entry is 'energetic' and 'energy' not in features:
+                    if 'energy' not in prev_features:
+                        features.append('energy')
+                    else:
+                        prev_features.remove('energy')
+                elif entry is 'live' and 'liveness' not in features:
+                    if 'liveness' not in prev_features:
+                        features.append('liveness')
+                    else:
+                        prev_features.remove('liveness')
+
+def fill_genres(genres):
+    if len(genres) < 5 and 'alternative' in genres and 'alt-rock' not in genres:
+        genres.append('alt-rock')
+
+    if len(genres) < 5 and 'r-n-b' in genres and 'soul' not in genres:
+        genres.append('soul')
+
+    if len(genres) < 5 and 'soul' in genres and 'r-n-b' not in genres:
+        genres.append('r-n-b')
+
+    if len(genres) < 5 and 'techno' in genres and 'detroit-techno' not in genres:
+        genres.append('detroit-techno')
+
+    #Spotify has many genres that aren't able to be used as recommendation seed
+    #   Unfortunately, almost all hip hop subgenres fall into that category, so they can't be filled out
+    #   Trip-hop is listed as a hip-hop subgenre, but as a listener to both, I'd list them as pretty distinct
+    #       - Portishead (a notable trip-hop band) does not sound like Kendrick Lamar, Drake, Kanye West, etc
+    #if len(genres) < 5 and 'hip-hop' in genres:
+    #    genres.append('trip-hop')
+
+    avail_rock_genres = ['rock-n-roll', 'punk-rock', 'psych-rock', 'grunge', 'garage', 'alt-rock', 'hard-rock']
+    avail_pop_genres = ['pop-film', 'synth-pop', 'party', 'indie-pop', 'club']
+
+    if 'rock' in genres or 'pop' in genres:
+        while len(genres) < 5:
+            if 'rock' in genres:
+                choice = random.choice(avail_rock_genres)
+                if choice not in genres:
+                    genres.append(choice)
+
+            if 'pop' in genres:
+                choice = random.choice(avail_pop_genres)
+                if choice not in genres:
+                    genres.append(choice)
 
 
 # Run overall workflow for spotify portion
@@ -134,6 +194,7 @@ def generate_playlist(handle="No Twitter Handle", seeds=([], [])):
     pos_features = []
     neg_features = []
     filter_seeds(positive, genres, pos_features)
+    fill_genres(genres)
     # Spotify cannot do negatively correlated genres, so pass empty array
     filter_seeds(negative, [], neg_features, prev_features=pos_features)
 

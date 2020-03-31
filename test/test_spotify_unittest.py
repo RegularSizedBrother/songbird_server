@@ -210,6 +210,30 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert genres == expected_genres
         assert features == expected_features
 
+    def test_filter_no_soundtracks(self):
+        seeds = ['soundtrack']
+        genres = []
+        features = []
+        expected_genres = []
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
+    def test_filter_no_soundtracks2(self):
+        seeds = ["soundtrack"]
+        genres = []
+        features = []
+        expected_genres = []
+        expected_features = []
+
+        spotify.filter_seeds(seeds, genres, features)
+
+        assert genres == expected_genres
+        assert features == expected_features
+
     def test_filter_duplicate_feats(self):
         seeds = ['cheese', 'rap', 'hip-hop', 'energy', 'seventy-two', 'energy', 'rock', 'jazz', 'fake', 'valence']
         genres = []
@@ -260,6 +284,49 @@ class Spotify_Unit_Tests(unittest.TestCase):
 
         assert neg_features == expected_neg_features
         assert pos_features == expected_pos_features
+
+    def test_fill_genres_hardcoded(self):
+        genres = ['soul', 'alternative', 'techno']
+
+        expected_genres = ['soul', 'alternative', 'techno', 'alt-rock', 'r-n-b']
+
+        spotify.fill_genres(genres)
+
+        assert genres == expected_genres
+
+    def test_fill_genres_hardcoded2(self):
+        genres = ['r-n-b', 'techno']
+
+        expected_genres = ['r-n-b', 'techno', 'soul', 'detroit-techno']
+
+        spotify.fill_genres(genres)
+
+        assert genres == expected_genres
+
+    def test_fill_genres_full(self):
+        genres = ['pop', 'rock', 'soul', 'r-n-b', 'techno']
+
+        expected_genres = ['pop', 'rock', 'soul', 'r-n-b', 'techno']
+
+        spotify.fill_genres(genres)
+
+        assert genres == expected_genres
+
+    def test_fill_genres_rock(self):
+        genres = ['rock']
+
+        spotify.fill_genres(genres)
+
+        assert len(genres) == 5
+        assert genres[0] == 'rock'
+
+    def test_fill_genres_pop(self):
+        genres = ['pop']
+
+        spotify.fill_genres(genres)
+
+        assert len(genres) == 5
+        assert genres[0] == 'pop'
 
     def test_recommendation_sorcery(self):
         genres = ['rock', 'pop']
