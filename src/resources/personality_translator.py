@@ -1,13 +1,13 @@
 
 # Translate Big 5 to MBTI
 class PersonalityTranslator:
-    def __init__(self, traits):
+    def __init__(self):
         # Big 5
-        self.neuro = traits['Emotional range'] * 100
-        self.extra = traits['Extraversion'] * 100
-        self.open = traits['Openness'] * 100
-        self.agree = traits['Agreeableness'] * 100
-        self.conscientious = traits['Conscientiousness'] * 100
+        self.neuro = 0
+        self.extra = 0
+        self.open = 0
+        self.agree = 0
+        self.conscientious = 0
         
         # MBTI
         # Extraversion vs Introversion
@@ -27,7 +27,13 @@ class PersonalityTranslator:
         self.P = 0
 
 
-    def calculator(self):
+    def calculator(self, traits):
+        self.neuro = traits['Emotional range'] * 100
+        self.extra = traits['Extraversion'] * 100
+        self.open = traits['Openness'] * 100
+        self.agree = traits['Agreeableness'] * 100
+        self.conscientious = traits['Conscientiousness'] * 100
+        
         self.E = self.neuro * (-0.24) + self.extra * 0.69 + self.open * 0.21 + self.agree * 0.00 + self.conscientious * 0.03
         self.I = self.neuro * 0.26 + self.extra * (-0.46) + self.open * 0.22 + self.agree * (-0.01) + self.conscientious * 0.06
 
@@ -61,10 +67,4 @@ class PersonalityTranslator:
         else:
            result.append('P')
 
-        return result
-
-# Testing
-if __name__ == "__main__":
-   traits = {'Openness': 0.959140460372601, 'Conscientiousness': 0.5774119639163334, 'Extraversion': 0.17586422494357157, 'Agreeableness': 0.1091535571286823, 'Emotional range': 0.3187110015885801}
-   pt = PersonalityTranslator(traits)
-   print(pt.calculator())
+        return ('').join(result)

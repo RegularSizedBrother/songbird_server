@@ -18,6 +18,7 @@ class Attribute(Resource):
                     "Extraversion": recommendation.extraversion,
                     "Agreeableness": recommendation.agreeableness,
                     "Emotional Range": recommendation.neuroticism,
+                    "MBTI": recommendation.mbti,
                 }
             }
         else:
