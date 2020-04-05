@@ -1,6 +1,6 @@
-import src.jobs.social_media as social_media1
+import src.jobs.social_media as social_media
 from src.models.recommendation import Recommendation, db
-from src.app import create_testing_app
+from src.testing_app import create_testing_app
 
 def test_reserved_strings_valid_users():
     strings = [
