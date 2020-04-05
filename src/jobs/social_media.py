@@ -1,3 +1,4 @@
+# from src.app import create_app as base_app
 from src import app as base_app
 
 from src.models.shared import db
@@ -12,8 +13,13 @@ import src.jobs.spotify as spotify
 from math import floor
 
 @huey.task()
-def process_social_media(id, dumper_type=TwitterDumper):
-    app = base_app.create_app()
+def process_social_media(id, dumper_type=TwitterDumper, testing=False):
+    app = None
+    if testing:
+        app = base_app.create_testing_app()
+    else:
+        app = base_app.create_app()
+
     with app.app_context():
         print("### Starting social media job for id %i ###" % id)
 

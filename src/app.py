@@ -16,3 +16,15 @@ def create_app():
 
     return app
 
+def create_testing_app():
+    app = Flask('songbird_test')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///songbird_test.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    CORS(app)
+
+    db.init_app(app)
+    api.init_app(app)
+
+    return app
+

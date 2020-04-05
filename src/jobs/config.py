@@ -1,3 +1,8 @@
 from huey import SqliteHuey
+import sys
 
-huey = SqliteHuey()
+if "pytest" in sys.modules:
+    huey = SqliteHuey(immediate=True)
+else:
+    huey = SqliteHuey()
+
