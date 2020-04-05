@@ -1,4 +1,4 @@
-import src.jobs.social_media as social_media
+import src.jobs.social_media as social_media1
 from src.models.recommendation import Recommendation, db
 from src.app import create_testing_app
 
