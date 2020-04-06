@@ -2,7 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 
 from src.models.shared import db
-from src.resources.api import api
+# from src.resources.api import api
+import src.resources.api as api
 
 def create_app():
     app = Flask('songbird')
@@ -12,7 +13,7 @@ def create_app():
     CORS(app)
 
     db.init_app(app)
-    api.init_app(app)
+    api.api.init_app(app)
 
     return app
 
@@ -24,7 +25,7 @@ def create_testing_app():
     CORS(app)
 
     db.init_app(app)
-    api.init_app(app)
+    api.api.init_app(app)
 
     return app
 
