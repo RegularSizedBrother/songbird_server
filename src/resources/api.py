@@ -1,6 +1,7 @@
 from flask_restful import Api
 
-from src.resources.twitter import Twitter
+# from src.resources.twitter import Twitter
+import src.resources.twitter as t
 from src.resources.attribute import Attribute
 from src.resources.playlist import Playlist
 from src.resources.bob.twitter import BobTwitter
@@ -9,7 +10,7 @@ from src.resources.bob.playlist import BobPlaylist
 
 api = Api()
 
-api.add_resource(Twitter, '/twitter')
+api.add_resource(t.Twitter, '/twitter')
 api.add_resource(Attribute, '/attributes/<int:handle_id>')
 api.add_resource(Playlist, '/playlist/<int:handle_id>')
 
