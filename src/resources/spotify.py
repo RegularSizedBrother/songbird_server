@@ -112,37 +112,50 @@ def filter_seeds(seeds=None, genres=[], features=[], prev_features=[]):
                         features.append(entry)
                     else:
                         prev_features.remove(entry)
-                    # features.append(entry)
-                    # Commented out because features are not currently considered
-                    # print('Feature: ' + str(entry))
+                #Rap is not a spotify recommendation seed, but hip-hop is
                 elif entry is 'rap' and 'hip-hop' not in genres and len(genres) < 5:
                     genres.append('hip-hop')
+                #due to an error in discovery
                 elif entry is '/funk' and 'funk' not in genres and len(genres) < 5:
                     genres.append('funk')
+                #potential formatting
                 elif entry is 'r&b' and 'r-n-b' not in genres and len(genres) < 5:
                     genres.append('funk')
+                #potential formatting
                 elif entry is 'R&B' and 'r-n-b' not in genres and len(genres) < 5:
                     genres.append('r-n-b')
+                #How the "instrumentalness" feature will likely be described
                 elif entry is 'instrumental' and 'instrumentalness' not in features:
                     if 'instrumentalness' not in prev_features:
                         features.append('instrumentalness')
                     else:
                         prev_features.remove('instrumentalness')
+                #How the "valence" feature will likely be described
                 elif entry is 'happy' and 'valence' not in features:
                     if 'valence' not in prev_features:
                         features.append('valence')
                     else:
                         prev_features.remove('valence')
+                #Parsing the energetic feature
                 elif entry is 'energetic' and 'energy' not in features:
                     if 'energy' not in prev_features:
                         features.append('energy')
                     else:
                         prev_features.remove('energy')
+                #parsing the liveness feature
                 elif entry is 'live' and 'liveness' not in features:
                     if 'liveness' not in prev_features:
                         features.append('liveness')
                     else:
                         prev_features.remove('liveness')
+                #parsing the acousticness feature
+                elif entry is 'acoustic' and 'acousticness' not in features:
+                    if 'acousticness' not in prev_features:
+                        features.append('accousticness')
+                    else:
+                        prev_features.remove('liveness')
+                #There is no spoken word genre, and its not worth disrupting our entire process to get this niche genre.
+                # my experience with the 'speechiness' trait leads to bad recommendations
 
 def fill_genres(genres):
     if len(genres) < 5 and 'alternative' in genres and 'alt-rock' not in genres:
@@ -156,6 +169,12 @@ def fill_genres(genres):
 
     if len(genres) < 5 and 'techno' in genres and 'detroit-techno' not in genres:
         genres.append('detroit-techno')
+
+    if len(genres) < 5 and 'country' in genres and 'bluegrass' not in genres:
+        genres.append('bluegrass')
+
+    if len(genres) < 5 and 'dance' in genres and 'house' not in genres:
+        genres.append('house')
 
     #Spotify has many genres that aren't able to be used as recommendation seed
     #   Unfortunately, almost all hip hop subgenres fall into that category, so they can't be filled out

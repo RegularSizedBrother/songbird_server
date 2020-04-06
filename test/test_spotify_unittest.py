@@ -328,6 +328,22 @@ class Spotify_Unit_Tests(unittest.TestCase):
         assert len(genres) == 5
         assert genres[0] == 'pop'
 
+    def test_fill_genres_country(self):
+        genres = ['country']
+        expected_genres = ['country', 'bluegrass']
+
+        spotify.fill_genres(genres)
+
+        assert genres == expected_genres
+
+    def test_fill_genres_dance(self):
+        genres = ['dance']
+        expected_genres = ['dance', 'house']
+
+        spotify.fill_genres(genres)
+
+        assert genres == expected_genres
+
     def test_recommendation_sorcery(self):
         genres = ['rock', 'pop']
 
