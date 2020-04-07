@@ -23,7 +23,6 @@ def process_social_media(id, dumper_type=TwitterDumper):
         analyzer = PersonalityAnalyzer()
 
         if not dumper.valid_user(recommendation.handle):
-            print(recommendation.handle)
             recommendation.error = True
             db.session.commit()
             return
