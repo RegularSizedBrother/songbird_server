@@ -12,6 +12,7 @@ class Playlist(Resource):
             return {
                 "error": False,
                 "playlist": recommendation.playlist,
+                "genres": recommendation.genres,
             }
         else:
             return {"wait": True}

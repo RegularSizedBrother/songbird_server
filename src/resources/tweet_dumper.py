@@ -23,12 +23,12 @@ class TwitterDumper:
         self.max_id = None
 
     def valid_user(self, handle):
-        try:
+        #try:
             self.api.get_user(handle)
             return True
-        except:
-            print("       Invalid user")
-            return False
+        #except:
+        #    print("       Invalid user", handle)
+        #    return False
 
     def get_next_tweets(self, handle, count=200):
         try:

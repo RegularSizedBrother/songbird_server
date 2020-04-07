@@ -9,6 +9,7 @@ class Recommendation(db.Model):
     agreeableness = db.Column(db.Integer)
     neuroticism = db.Column(db.Integer)
     playlist = db.Column(db.String(255))
+    genres = db.Column(db.String(255))
     error = db.Column(db.Boolean)
     finished = db.Column(db.Boolean)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
