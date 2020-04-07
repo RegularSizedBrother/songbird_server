@@ -7,20 +7,38 @@ from spotipy import oauth2
 from src.resources import spotify_config
 import random
 
-
-# Request permissions?
-# Not sure how this works yet, but not necessary for final product
-
-
-# May? require editing if/when we want to allow other users, but this should keep us logged into the Songbird account
+#Default case will keep us logged into the Songbird account, but if it finds a token from a logged in user, it will
+#read that first.
 def get_access_token():
-    sp_oauth = oauth2.SpotifyOAuth(spotify_config.SPOTIFY_CLIENT_ID, spotify_config.SPOTIFY_CLIENT_SECRET, spotify_config.SPOTIFY_REDIRECT_URI, scope=spotify_config.SCOPE, cache_path=spotify_config.CACHE)
+    #Check for user token
+    sp_oauth = oauth2.SpotifyOAuth(spotify_config.SPOTIFY_CLIENT_ID,
+                                   spotify_config.SPOTIFY_CLIENT_SECRET,
+                                   spotify_config.SPOTIFY_REDIRECT_URL,
+                                   scope=spotify_config.SCOPE,
+                                   cache_path=spotify_config.USER_CACHE)
     token_info = sp_oauth.get_cached_token()
 
     if token_info:
         access_token = token_info['access_token']
     else:
-        access_token = spotipy.util.prompt_for_user_token(spotify_config.SONGBIRD_USER_EMAIL, scope=spotify_config.SCOPE, client_id=spotify_config.SPOTIFY_CLIENT_ID, client_secret=spotify_config.SPOTIFY_CLIENT_SECRET, redirect_uri='http://localhost:5000', cache_path=spotify_config.CACHE)
+        #Since the user token was not found, grab the default
+        sp_oauth = oauth2.SpotifyOAuth(spotify_config.SPOTIFY_CLIENT_ID,
+                                       spotify_config.SPOTIFY_CLIENT_SECRET,
+                                       spotify_config.SPOTIFY_REDIRECT_URL,
+                                       scope=spotify_config.SCOPE,
+                                       cache_path=spotify_config.DEFAULT_CACHE)
+        token_info = sp_oauth.get_cached_token()
+
+        if token_info:
+            access_token = token_info['access_token']
+        else:
+            #If not found, create the token - should never come up in actual use
+            access_token = spotipy.util.prompt_for_user_token(spotify_config.SONGBIRD_USER_EMAIL,
+                                                              scope=spotify_config.SCOPE,
+                                                              client_id=spotify_config.SPOTIFY_CLIENT_ID,
+                                                              client_secret=spotify_config.SPOTIFY_CLIENT_SECRET,
+                                                              redirect_uri=spotify_config.SONGBIRD_CLIENT_REDIRECT_URL,
+                                                              cache_path=spotify_config.CACHE)
 
     return access_token
 
