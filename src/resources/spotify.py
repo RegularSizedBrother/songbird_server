@@ -6,6 +6,7 @@ import spotipy
 from spotipy import oauth2
 from src.resources import spotify_config
 import random
+import os
 
 #Default case will keep us logged into the Songbird account, but if it finds a token from a logged in user, it will
 #read that first.
@@ -42,6 +43,45 @@ def get_access_token():
 
     return access_token
 
+#Determines if the file at the user token cache exists (if they are currently logged in)
+def is_user_logged_in():
+    return os.path.isfile(spotify_config.USER_CACHE)
+
+#Saves token returned from url to the specified user cache location in spotify_config.py
+#Parameters - URL - the full url from the CLIENT that was called back from the Spotify login button
+def save_user_token(url):
+    #create spotify oauth obejct for user cache
+    sp_oauth = oauth2.SpotifyOAuth(spotify_config.SPOTIFY_CLIENT_ID,
+                                   spotify_config.SPOTIFY_CLIENT_SECRET,
+                                   spotify_config.SPOTIFY_REDIRECT_URL,
+                                   scope=spotify_config.SCOPE,
+                                   cache_path=spotify_config.USER_CACHE)
+
+    print('Received url: ' + url)
+    code = sp_oauth.parse_response_code(url)
+    if code:
+        print('Successfully parsed token! Code: ' + code)
+    else:
+        print('Failed to parse token.')
+
+#Returns the User's name from the User's spotify token
+#NOTE: RETURNS AN EMPTY STRING IF NO USER DETECTED
+def get_user_name():
+    if is_user_logged_in():
+        access_token = get_access_token()
+        sp = spotipy.Spotify(access_token)
+        user_info = sp.current_user()
+        #Can return more info if needed, for now only returning display name
+        return user_info['Songbird']
+    else:
+        return ''
+
+#Deletes the User's cached spotify token
+#Should be used when logging out
+def delete_user_token():
+    print('Deleting cached user token...')
+    os.remove(spotify_config.USER_CACHE)
+    print('Cached user token deleted.')
 
 # Get recommendations - returns an array of tracks based on genres and traits - PRE SORTED
 # REQUIRES 5 OR LESS GENRES - USE filter_seeds TO QUALITY CHECK
