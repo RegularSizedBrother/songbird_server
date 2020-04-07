@@ -145,10 +145,11 @@ class MusicGenreQuerier:
         return [dimension_correlates[name] for name in dimension_correlates]
 
     #Returns:
+    # A tuple consisting of:
     #   list of positively correlating genres
     #   list of negatively correlating genres
     # The lists will include duplicates of genres if they are correlated with more than one trait in high_scoring_traits.
-    # given a list of high scoring personality traits(list
+    # given a dictionary of high scoring personality traits, sorted by positive or negative distance from mean, with "pos" and "neg" as keys for list entries
     # of strings of the names: agreeableness, openness to experience, extroversion, conscientiousness, neuroticism
     #If dummy: uses only genres that co-occur with traits and returns all in the positive set
     #Else: uses genres that have positive or negative correlation with traits in the corresponding positive/negative set
