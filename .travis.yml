@@ -1,6 +1,6 @@
 language: python
 python: 3.6
 install:
-  python setup_db.py
   pip install -r requirements.txt
+  python setup_db.py
 script: pytest < test/spotify_testing.txt
