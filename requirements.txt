@@ -11,3 +11,4 @@ rq==1.2.2
 tweepy==3.8.0
 pandas==1.0.1
 praw==6.5.1
+huey==2.1.3
