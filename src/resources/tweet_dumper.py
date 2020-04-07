@@ -71,3 +71,4 @@ if __name__ == '__main__':
         getter.write_tweets_to_file("tmp/%s.txt" % sys.argv[1], sys.argv[1])
     else:
         print("Error: enter one username")
+        
