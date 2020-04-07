@@ -8,6 +8,7 @@ class Recommendation(db.Model):
     extraversion = db.Column(db.Integer)
     agreeableness = db.Column(db.Integer)
     neuroticism = db.Column(db.Integer)
+    mbti = db.Column(db.String(50))
     playlist = db.Column(db.String(255))
     genres = db.Column(db.String(255))
     error = db.Column(db.Boolean)

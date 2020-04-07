@@ -6,7 +6,7 @@
 pip install
 ```
 
-To run the background consumers, you will need [Redis](https://redis.io) and [Huey](https://huey.readthedocs.io/en/latest/index.html).
+To run the background consumers, you will need [SQLite](https://sqlite.org/) and [Huey](https://huey.readthedocs.io/en/latest/index.html).
 
 ## Creating the Database
 
@@ -22,7 +22,7 @@ Run the server
 python main.py
 ```
 
-Run the background jobs (be sure there is a redis instane runnning)
+Run the background jobs (be sure there is a SQLite instance runnning)
 
 ```
 huey_consumer.py start_huey.huey
