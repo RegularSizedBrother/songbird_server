@@ -5,6 +5,7 @@ from src.models.recommendation import Recommendation
 from src.resources.tweet_dumper import TwitterDumper
 from src.resources.reddit_dumper import RedditDumper
 from src.resources.personality_analyzer import PersonalityAnalyzer
+from src.resources.personality_translator import PersonalityTranslator
 
 from src.jobs.config import huey
 import src.jobs.spotify as spotify
@@ -21,6 +22,7 @@ def process_social_media(id, dumper_type=TwitterDumper):
 
         dumper = dumper_type()
         analyzer = PersonalityAnalyzer()
+        translator = PersonalityTranslator()
 
         if not dumper.valid_user(recommendation.handle):
             recommendation.error = True
@@ -30,6 +32,7 @@ def process_social_media(id, dumper_type=TwitterDumper):
         text = dumper.get_all_text(recommendation.handle)
         profile = analyzer.get_profile(text)
         traits = analyzer.traits_to_vector(profile)
+        mbti = translator.calculator(traits)
 
         if profile is not None:
             recommendation.openness = floor(traits['Openness'] * 100)
@@ -37,6 +40,7 @@ def process_social_media(id, dumper_type=TwitterDumper):
             recommendation.extraversion = floor(traits['Extraversion'] * 100)
             recommendation.agreeableness = floor(traits['Agreeableness'] * 100)
             recommendation.neuroticism = floor(traits['Emotional range'] * 100)
+            recommendation.mbti = mbti
         else:
             recommendation.error = True
 
