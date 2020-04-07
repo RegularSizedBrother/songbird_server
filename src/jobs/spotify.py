@@ -26,6 +26,8 @@ def process_spotify(id):
         genres = tweet_genres.get_genres_from_profile(attributes)
         playlist = spotify.generate_playlist(recommendation.handle, genres)
         recommendation.playlist = playlist
+        recommendation.genres = ", ".join(genres[0])
+        print(recommendation.genres)
 
         db.session.commit()
 
