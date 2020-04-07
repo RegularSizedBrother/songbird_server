@@ -34,17 +34,17 @@ class PersonalityTranslator:
         self.agree = traits['Agreeableness'] * 100
         self.conscientious = traits['Conscientiousness'] * 100
         
-        self.E = self.neuro * (-0.24) + self.extra * 0.69 + self.open * 0.21 + self.agree * 0.00 + self.conscientious * 0.03
-        self.I = self.neuro * 0.26 + self.extra * (-0.46) + self.open * 0.22 + self.agree * (-0.01) + self.conscientious * 0.06
+        self.E = self.neuro * (-0.24) + self.extra * 0.69  + self.open * (-0.30) + self.agree * 0.00  + self.conscientious * (-0.11) 
+        self.I = self.neuro * 0.26 + self.extra * (-0.46) + self.open * 0.30 + self.agree * (-0.01)  + self.conscientious * 0.01 
 
-        self.S = self.neuro * (-0.02) + self.extra * (-0.18) + self.open * 0.52 + self.agree * 0.03 + self.conscientious * 0.20
-        self.N = self.neuro * 0.03 + self.extra * 0.16 + self.open * 0.49 + self.agree * 0.03 + self.conscientious * 0.24
+        self.S = self.neuro * (-0.02) * 0.05 + self.extra * (-0.18) * 0.11 + self.open * 0.52 * 0.48 + self.agree * (-0.11) * 0.04 + self.conscientious * 0.20 * (-0.15)
+        self.N = self.neuro * 0.03 * 0.05 + self.extra * 0.16 * 0.11 + self.open * 0.49 * 0.48 + self.agree * 0.29 * 0.04 + self.conscientious * 0.24 * (-0.15)
 
-        self.T = self.neuro * (-0.16) + self.extra * 0.09 + self.open * 0.22 + self.agree * 0.40 + self.conscientious * (-0.28)
-        self.F = self.neuro * 0.18 + self.extra * 0.05 + self.open * 0.22 + self.agree * 0.40 + self.conscientious * (-0.28)
+        self.T = self.neuro * (-0.16) * 0.06 + self.extra * 0.09 * 0.19 + self.open * 0.22 * 0.02 + self.agree * 0.40 * 0.44 + self.conscientious * (-0.28) * (-0.15)
+        self.F = self.neuro * 0.18 * 0.06 + self.extra * 0.05 * 0.19 + self.open * 0.22 * 0.02 + self.agree * 0.40 * 0.44 + self.conscientious * (-0.28) * (-0.15)
 
-        self.J = self.neuro * 0.01 + self.extra * (-0.03) + self.open * (-0.24) + self.agree * 0.06 + self.conscientious * 0.50
-        self.P = self.neuro * (-0.00) + self.extra * 0.02 + self.open * 0.24 + self.agree * 0.00 + self.conscientious * (-0.41)
+        self.J = self.neuro * (-0.25) + self.extra * (-0.03) + self.open * (-0.24) + self.agree * 0.06 + self.conscientious * 0.50 
+        self.P = self.neuro * 0.30 + self.extra * 0.02 + self.open * 0.24 + self.agree * 0.00 + self.conscientious * (-0.41)
 
         result = []
         if self.E > self.I:
