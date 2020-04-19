@@ -9,12 +9,6 @@ import tweepy #https://github.com/tweepy/tweepy
 import csv
 import sys
 
-#Twitter API credentials
-consumer_key = "EMrzCUAxblUXdh5CSTI73tDbB"
-consumer_secret = "Pc63SQxLggiQlLRAM8bHOgxK3o4ATePMBbkSzys88LeibUlcKW"
-access_key = "1222999226679881729-I1j6gUKMqu8zTapQNbRRh5FN5v2BF5"
-access_secret = "T6ziZON3bTbF1W9LAwuOXNJxqBesBA1bfwAtzmIflR7jD"
-
 
 class TwitterDumper:
     def __init__(self):
