@@ -4,7 +4,7 @@ from src.models.recommendation import Recommendation, db
 import tweepy
 
 class TwitterReply():
-    def reply_with_spotify(api, tweet):
+    def reply_with_spotify(self, api, tweet):
         username = tweet.user.screen_name
         records = Recommendation.query.filter_by(handle=username).all()
         record = records[-1]
