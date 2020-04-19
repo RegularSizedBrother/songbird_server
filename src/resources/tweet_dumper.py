@@ -3,6 +3,7 @@
 #Code taken from: https://gist.github.com/yanofsky/5436496
 
 from src.models.recommendation import Recommendation, db
+from src.resources.config import create_api
 
 import tweepy #https://github.com/tweepy/tweepy
 import csv
@@ -17,9 +18,9 @@ access_secret = "T6ziZON3bTbF1W9LAwuOXNJxqBesBA1bfwAtzmIflR7jD"
 
 class TwitterDumper:
     def __init__(self):
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_key, access_secret)
-        self.api = tweepy.API(auth)
+        #auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        #auth.set_access_token(access_key, access_secret)
+        self.api = create_api()
         self.max_id = None
 
     def valid_user(self, handle):
