@@ -28,6 +28,11 @@ Run the background jobs (be sure there is a SQLite instance runnning)
 huey_consumer.py start_huey.huey
 ```
 
+## Run the bot
+(Run all of the database scripts before calling this)
+
+python twit_bot_processor.py
+
 ## Testing
 
 ```
