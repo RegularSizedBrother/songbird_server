@@ -7,7 +7,7 @@ from src.jobs.config import huey
 import src.resources.spotify as spotify
 import src.resources.tweet_genres as tweet_genres
 
-@huey.task()
+#@huey.task()
 def process_spotify(id):
     app = base_app.create_app()
     with app.app_context():
@@ -32,3 +32,4 @@ def process_spotify(id):
         db.session.commit()
 
         print("### Finished spotify job for id %i ###" % id)
+        return playlist

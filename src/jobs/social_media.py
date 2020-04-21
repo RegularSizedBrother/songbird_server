@@ -12,7 +12,7 @@ import src.jobs.spotify as spotify
 
 from math import floor
 
-@huey.task()
+#@huey.task()
 def process_social_media(id, dumper_type=TwitterDumper):
     app = base_app.create_app()
     with app.app_context():
@@ -48,6 +48,6 @@ def process_social_media(id, dumper_type=TwitterDumper):
         db.session.commit()
 
         if not recommendation.error:
-            spotify.process_spotify(id)
+            return spotify.process_spotify(id)
 
         print("### Finished social media job for id %i ###" % id)
