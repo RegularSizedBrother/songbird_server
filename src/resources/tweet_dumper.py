@@ -3,12 +3,12 @@
 #Code taken from: https://gist.github.com/yanofsky/5436496
 
 from src.models.recommendation import Recommendation, db
-from src.resources.config import create_api
 
 import tweepy #https://github.com/tweepy/tweepy
 import csv
 import sys
 
+#Twitter API credentials
 consumer_key = "EMrzCUAxblUXdh5CSTI73tDbB"
 consumer_secret = "Pc63SQxLggiQlLRAM8bHOgxK3o4ATePMBbkSzys88LeibUlcKW"
 access_key = "1222999226679881729-I1j6gUKMqu8zTapQNbRRh5FN5v2BF5"
@@ -19,7 +19,7 @@ class TwitterDumper:
     def __init__(self):
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_key, access_secret)
-        self.api = create_api()
+        self.api = tweepy.API(auth)
         self.max_id = None
 
     def valid_user(self, handle):
@@ -71,3 +71,4 @@ if __name__ == '__main__':
         getter.write_tweets_to_file("tmp/%s.txt" % sys.argv[1], sys.argv[1])
     else:
         print("Error: enter one username")
+        
